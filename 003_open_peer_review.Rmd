@@ -1,0 +1,292 @@
+# Open Peer Review
+## part 1
+
+This exercise is about identifying reproducibility issues in a scientific publication. I used the criteria for reproduciblity that are publically available [via here](https://www.researchgate.net/publication/340244621_Reproducibility_and_reporting_practices_in_COVID-19_preprint_manuscripts)
+
+I used to following article to grade for reproducibility:
+
+[Protective Behavior in Course of the COVID-19 Outbreak—Survey Results From Germany](https://www.frontiersin.org/articles/10.3389/fpubh.2020.572561/full) 
+
+
+|    Transparency Criteria    |                                                                                                                                 Definition                                                                                                                                 |            Response Type            |
+|:---------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-----------------------------------:|
+| Study Purpose               | A concise statement in the introduction of the article, often in the last paragraph,  that establishes the reason the research was conducted. Also called the study objective.                                                                                             | yes                                 |
+| Data Availability Statement | A statement, in an individual section offset from the main body of text,  that explains how or if one can access a study’s data. The title of the section may vary,  but it must explicitly mention data; it is therefore distinct from a supplementary materials section. | yes                                 |
+| Data Location               | Where the article’s data can be accessed, either raw or processed.                                                                                                                                                                                                         | All in paper or supplementary files |
+| Study Location              | Author has stated in the methods section where the study took place or the data’s country/region of origin.                                                                                                                                                                | Yes; Germany                        |
+| Author Review               | The professionalism of the contact information that the author has provided in the manuscript.                                                                                                                                                                             | Tier 2                              |
+| Ethics Statement            | A statement within the manuscript indicating any ethical concerns, including the presence of sensitive data.                                                                                                                                                               | Yes                                 |
+| Funding Statement           | A statement within the manuscript indicating whether or not the authors received funding for their research.                                                                                                                                                               | No                                  |
+| Code Availability           | Authors have shared access to the most updated code that they used in their study, including code used for analysis.                                                                                                                                                       | Yes                                 |
+
+
+
+
+
+### extra information about the study
+
+goal of the study:
+
+Disease-related literacy and factors such as age, gender, or education
+play a major role in shaping individual practices of protective behavior. This paper
+investigates different types and frequency of practicing protective behaviors, as well as
+socio-demographic factors that are associated with such behavioral change
+
+Method:
+
+Data stem from a cross-sectional survey in Germany. Three thousand
+seven hundred and sixty-five people were contacted, 3,186 participated in the survey.
+Information on behavior to lower the risk of becoming infected with COVID-19 was
+assessed by nine items (answer options yes/no). For each item, logistic regression
+models were used to estimate odds ratios (OR), using education, sex, and age as main
+predictors and adjusting for partnership status and household composition.
+
+results:
+
+People with lower educational level were less likely to avoid gatherings
+(OR = 0.63; 95%CI = 0.48–0.83), adapt their work situation (OR = 0.66; 95%CI
+= 0.52–0.82), reduce personal contacts and meetings (OR = 0.71; 95%CI = 0.55–0.93),
+or increase hand hygiene (OR = 0.53; 95%CI = 0.38–0.73). Being female was associated
+with higher odds of protective behavior for most outcomes. Exceptions were wearing
+face masks and adapting the own work situation. Associations between respondents’
+age and individual behavior change were inconsistent and mostly weak
+
+## Part 2
+In this part of the exercise I am going to reproduce at least 1 figure from a article using a data set and R-code shared in the project environment.
+
+The first step is to look at the article and code.
+
+This research was done in both Turkey and UK. The generalized and pandemic-related anxiety levels, future-oriented consideration, mindfulness, intolerance of uncertainty, risk perception and risk avoidance behaviors of the people who participated in the study were measured. These were then processed in Excel
+
+This code loads both data from the UK and Turkey and merges them together so that there is one large excel document containing all  relevant data. The merged data is loaded and ggplots are made of the various factors mentioned above. In each ggplot, the **correlation** of the pandemic-related anxiety levels with one of the factors (generalized anxiety, future-oriented consideration, mindfulness, intolerance of uncertainty, risk perception and risk avoidance behaviors) is visualized. The obtained ggplots are merged into one large figure.
+
+After reading the code I would grade it a 4 on a scale from 1 to 5 for readability. I gave it a four because the code is pretty easily to read, However the names of the variables are sometimes confusing. This makes it difficult to distinguish what each plot  visualizes   
+
+After downloading the data and the code I tried running the code. This gave the following error message:
+
+Error in relevel.default(data$edu, "below_ug") : 
+  'relevel' only for (unordered) factors
+  
+  To fix this error is change the code from data\$edu= relevel(data\$edu, "below_ug") to data\$edu= relevel(factor(data\$edu), "below_ug"), This is also seen in the code chunk with an comment
+  
+```{r}
+## R CODE for Salali, Uysal, Bevan 2021 EMPH anxiety during a pandemic
+# contact guldeniz.salali@ucl.ac.uk
+library(lm.beta)
+rm(list=ls())
+
+#####################################################################
+# multiple regressions
+
+data=  read.csv("~/dsfb2/dsfb2_workflows_portfolio/opdracht1_2/part2/UK_complete_responses.csv", header=T)
+head(data)
+colnames(data)
+data_UK= data
+
+levels(data$edu)
+# here I changed the code
+data$edu= relevel(factor(data$edu), "below_ug")
+
+GAD_UK_m1= lm(GAD.mean ~ IUS.mean + FOC.mean + MAAS.mean + RiskPerception + 
+                   + edu + age + sex + FinancialSatisfaction, data=data)
+
+summary(GAD_UK_m1)
+
+# Covid-related anxiety model UK (CRA.mean)
+
+CRA_UK_full= lm(CRA.mean ~ IUS.mean + FOC.mean + MAAS.mean +  
+                 RiskPerception + edu + age + sex + 
+                 FinancialSatisfaction, data= data)
+summary(CRA_UK_full)
+lm.beta(CRA_UK_full) # standardized coefficients 
+
+# Risk avoidance behaviour RAB UK
+
+RAB_UK= lm(RAB.mean ~ IUS.mean + MAAS.mean + CRA.mean + RiskPerception +FinancialSatisfaction + age + 
+             sex + edu, data=data)
+
+# just anxiety
+
+RAB_UK_1= lm(RAB.mean ~  CRA.mean, data=data)
+
+summary(RAB_UK)
+summary(RAB_UK_1)
+library(lm.beta) 
+lm.beta(RAB_UK)
+
+
+############################################
+# TR 
+
+data=  read.csv("~/dsfb2/dsfb2_workflows_portfolio/opdracht1_2/part2/TR_complete_responses.csv", header=T)
+head(data)
+colnames(data)
+summary(data$edu)
+
+summary(data$age) # someone with 103
+data_TR= data[-which(data$age>=90),] # omit 103 yo
+
+# Covid-related anxiety model TR (CRA.mean)
+
+CRA_TR_full= lm(CRA.mean ~ IUS.mean + FOC.mean + MAAS.mean + 
+                 RiskPerception + 
+                  edu + age + sex + FinancialSatisfaction, data= data)
+
+summary(CRA_TR_full)
+lm.beta(CRA_TR_full)
+
+# Risk avoidance behaviour RAB TR
+
+RAB_TR= lm(RAB.mean ~ IUS.mean + MAAS.mean + CRA.mean + RiskPerception +FinancialSatisfaction + age + 
+             sex + edu, data=data)
+RAB_TR_1= lm(RAB.mean ~  CRA.mean, data=data)
+summary(RAB_TR)
+summary(RAB_TR_1)
+lm.beta(RAB_TR)
+
+
+```
+
+``` {r}
+############PLOTS FOR ANXIETY ###
+#library(ggplot2)
+
+#choose which data
+#data= data_UK1
+#data= data_TR1
+
+#colnames(data_UK1)
+#colnames(data_TR1)
+#dataUKmerge= data_UK1[,c("RAB.mean","GAD.mean", "GAD.Total.Adj", "CRA.mean","FOC.mean",
+#                         "IUS.mean", "MAAS.mean", "RiskPerception", 
+#                         "FinancialSatisfaction", "age", "sex", "edu")]
+#dataTRmerge= data_TR1[,c("RAB.mean","GAD.mean", "GAD.Total.Adj", "CRA.mean","FOC.mean",
+#                         "IUS.mean", "MAAS.mean", "RiskPerception", 
+#                         "FinancialSatisfaction", "age", "sex", "edu")]
+#dataTRmerge$Country=rep("Turkey", length(dataTRmerge[,1]))
+#dataUKmerge$Country=rep("UK", length(dataUKmerge[,1]))
+
+#datamerge= rbind(dataTRmerge, dataUKmerge)
+
+#write.csv(datamerge, "combineddata.csv")
+
+## READ FROM HERE: TR UK combined regression analysis 
+
+datamerge= read.csv("~/dsfb2/dsfb2_workflows_portfolio/opdracht1_2/part2/combineddata.csv")
+head(datamerge)
+summary(datamerge$Country)
+library(ggplot2)
+
+s= 8
+p=1
+t=0.3
+
+gad.cra=
+  ggplot(datamerge, aes(x=GAD.mean, y=CRA.mean, color=Country)) +
+ # geom_point(alpha = 0.3) + # with alpha blending to make points transparent
+  geom_jitter(size=t) +
+  geom_point(size=t) + 
+  geom_smooth(method=lm, se=T, size=p) + # or method=loess
+  ylab("Pandemic anxiety") +
+  xlab("Generalized anxiety") +
+  theme(axis.title=element_text(size=s)) +
+  theme(legend.position = "none") 
+
+   
+
+gad.ius=
+ggplot(datamerge, aes(x=IUS.mean, y=GAD.Total.Adj, color=Country)) +
+ # geom_point(alpha = 0.3) +
+  geom_jitter(size=t) +
+  geom_point(size=t) + 
+  geom_smooth(method=lm, se=T, size=p) + # or method=loess
+  ylab("GAD-7") +
+  xlab("Intolerance of uncertainty")  +
+  theme(axis.title=element_text(size=s)) +
+  theme(legend.position = "none")
+
+cra.ius=
+  ggplot(datamerge, aes(x=IUS.mean, y=CRA.mean, color=Country)) +
+  #geom_point(alpha = 0.3) +
+  geom_jitter(size=t) +
+  geom_point(size=t) + 
+  geom_smooth(method=lm, se=T, size=p) + # or method=loess
+  ylab("Pandemic anxiety") +
+  xlab("Intolerance of uncertainty")  +
+  theme(axis.title=element_text(size=s)) +
+  theme(legend.position = "none")
+  #ylim(1.5,3.5)
+
+cra.maas=
+  ggplot(datamerge, aes(x=MAAS.mean, y=CRA.mean, color=Country)) +
+  #geom_point(alpha = 0.3) +
+  geom_jitter(size=t) +
+  geom_point(size=t) + 
+  geom_smooth(method=lm, se=T, size=p) + # or method=loess  ylab("Pandemic anxiety") +
+  ylab("Pandemic anxiety") +
+  xlab("Mindfulness")  +
+  theme(axis.title=element_text(size=s)) +
+  theme(legend.position = "none")
+
+cra.foc=
+  ggplot(datamerge, aes(x=FOC.mean, y=CRA.mean, color=Country)) +
+  #geom_point(alpha = 0.3) +
+  geom_jitter(size=t) +
+  geom_point(size=t) + 
+  geom_smooth(method=lm, se=T, size=p) + # or method=loess
+  ylab("Pandemic anxiety") +
+  xlab("Future orientation")  +
+  theme(axis.title=element_text(size=s)) +
+  theme(legend.position = "none")
+
+cra.risk=
+  ggplot(datamerge, aes(x=RiskPerception, y=CRA.mean, color=Country)) +
+  #geom_point(alpha = 0.3) +
+  geom_jitter(size=t) +
+  geom_point(size=t) + 
+  geom_smooth(method=lm, se=T, size=p) + # or method=loess
+  ylab("Pandemic anxiety") +
+  xlab("Risk Perception")  +
+  theme(axis.title=element_text(size=s)) +
+  theme(legend.position = "none")
+
+rab.cra=
+  ggplot(datamerge, aes(x=CRA.mean, y=RAB.mean, color=Country)) +
+  #geom_point(alpha = 0.3) +
+  geom_jitter(size=t) +
+  geom_point(size=t) + 
+  geom_smooth(method=lm, se=T, size=p) + # or method=loess  ylab("Risk avoidance behaviour") +
+  ylab("Risk avoidance behaviour") +
+  xlab("Pandemic anxiety")  +
+  theme(axis.title=element_text(size=s)) +
+  theme(legend.position = "none")
+
+rab.gad=
+  ggplot(datamerge, aes(x=GAD.mean, y=RAB.mean, color=Country)) +
+ # geom_point(alpha = 0.3) +
+  geom_jitter(size=t) +
+  geom_point(size=t) + 
+  geom_smooth(method=lm, se=T, size=p) + # or method=loess  ylab("Risk avoidance behaviour") +
+  ylab("Risk avoidance behaviour") +
+  xlab("Generalized anxiety")  +
+  theme(axis.title=element_text(size=s)) +
+  theme(legend.position = "none")
+
+library(ggpubr)
+ggarrange(gad.cra, cra.foc, 
+          cra.ius, cra.maas, 
+          cra.risk, rab.cra,
+          labels = c("A", "B", 
+                     "C", "D",
+                     "E", "F"),
+          ncol = 2, nrow = 3,
+          font.label = list(size = 10, color = "black", face = "bold", family = NULL))
+
+
+```
+
+on a scale from 1 (very hard) to 5 (very easy), I would grade this article a 4 for how hard is was to reproduce the visualization from the article. I gave it a four because is was pretty easy to reproduce the graph. However I had to download the data wich made is easy for me to the load the data. It would be better if the code contained an URL to load the data. This would increase the reproducibility 
+
+
+
+
