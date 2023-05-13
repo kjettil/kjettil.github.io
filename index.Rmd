@@ -1,0 +1,24 @@
+--- 
+title: "Portfolio Kjettil Evers"
+author: "Kjettil Evers"
+date: "`r Sys.Date()`"
+site: "bookdown::bookdown_site"
+documentclass: book
+bibliography: ["book.bib", "packages.bib"]
+biblio-style: apalike
+link-citations: yes
+new_session: yes
+before_body: "Kjettil-Evers2.pdf"
+---
+
+# Welkom in mijn portfolio
+
+in dit boek staan de portfolio opdrachten die ik van de Hogeschool Utrecht heb verkregen en verwerkt
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
