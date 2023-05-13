@@ -1,0 +1,6 @@
+# example guerrilla analytics structure
+In this exercise we will show my folder structure using the guerrilla analytics structure
+
+```{r}
+fs::dir_tree(here::here("data", "opdracht2"))
+```
