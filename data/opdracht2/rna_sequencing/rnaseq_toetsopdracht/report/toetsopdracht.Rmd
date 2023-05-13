@@ -1,0 +1,526 @@
+---
+title: "toetsopdracht"
+author: "Kjettil Evers"
+date: "5-4-2023"
+output: html_document
+---
+
+```{r library, message=FALSE}
+library(tidyverse)
+library(Rsubread)
+library(DESeq2)
+library(readr)
+library(ggplot2)
+library(png)
+library(grid)
+library(gridExtra)
+library("org.Hs.eg.db")
+library(GOstats)
+library(pheatmap)
+library(GOstats)
+library(cowplot)
+
+```
+
+## opdracht 1
+### Schrijf een korte introductie voor de Rmarkdown met daarin in eigen woorden het doel van jouw onderzoek/analyses.
+
+
+in dit onderzoek worden fibroblasten uit één persoon geisoleerd. aan deze fibroblasten worden twee verschillende transcriptiefactoren toegevoegd (in duplo). waarvan BCLXL de controle is en ONECUT3 is een transcriptiefactor waarvan vermoed wordt dat deze fibroblasten kan omzetten in hersencellen. De onderzoeksvraag luid: 
+wat zijn de verschillen in genexpressie tussen BCLXL behandelde cellen en ONECUT3 behandelde cellen?
+
+hiervan hebben wij de standed RNA sequence datasets gekregen om de onderzoeksvraag te beantwoorden. 
+
+
+## opdracht 2
+Bekijk de FastQC html rapporten voor de verschillende fastq files. Wat zijn jullie conclusies?
+Vermeld deze conclusies in jullie Rmarkdown. Neem een of meerdere screenshot(s) op in
+jullie Rmarkdown om jullie conclusie te onderbouwen.
+
+```{r images, echo=FALSE, fig.height=3, out.width= '100%', fig.cap="Fig. 1: Quality distribution: Right-side) read quality scores range from 0 to 40 on the Phred scale. most bases for all reads in the forward graph have very high quality (>30),  indicating that most of our reads have an accuracy of >99,9%. on the other hand the reverse reads show a lower score on the Phred scale with most scores between 20 and >30. Left-side)" }
+
+img1 <-  rasterGrob(as.raster(readPNG("fastqc_SRR7866699_1_per_base_quality.png")))
+img2 <-  rasterGrob(as.raster(readPNG("fastqc_SRR7866699_2_per_base_quality.png")))
+grid.arrange(img1, img2, ncol=2, top=textGrob("Per base quality distribution of forward (left) and reverse (right) reads of SRR7866699", gp=gpar(fontsize=10,font=8)))
+```
+
+```{r images 2, echo=FALSE, fig.height=3, out.width= '100%', fig.cap="Fig. 2: Quality distribution: Right-side) read quality scores range from 0 to 40 on the Phred scale. most reads in the forward graph have very high quality (>30),  indicating that most of our reads have an accuracy of >99,9%. on the other hand the reverse reads show a lower score on the Phred scale with most scores between 20 and >30. Left-side) "}
+
+img3 <-  rasterGrob(as.raster(readPNG("fastqc_SRR7866699_1_per_sequence_quality.png")))
+img4 <-  rasterGrob(as.raster(readPNG("fastqc_SRR7866699_2_per_sequence_quality.png")))
+grid.arrange(img3, img4, ncol=2, top=textGrob("Per sequence quality distribution of forward (left) and reverse (right) reads of SRR7866705 ", gp=gpar(fontsize=10,font=8)))
+```
+
+conclusie: uit de grafieken van de fastqc-data is te zien dat de Per base sequence quality van de reverse dataover het algemeen lager is dan de forward data. echter is van alle data de Phred score nog steeds van hoge kwaliteit en zijn er geen poor read aangetroffen. Aangezien zowel de per base quality en de sequence quality hoge scores laten zien kan de data gebruikt worden voor verdere analyses. dit geld voor alle fastqc files die voor dit onderzoek gebruikt zijn.
+
+
+
+
+
+
+## opdracht 3
+Schrijf code voor het genereren van de count table met de Rsubread package. Jullie hoeven
+deze code niet uit te voeren, omdat de count table al voor jullie is gemaakt.
+NB: de bam directory bevat meer bam files dan alleen jullie bam files. Zorg dus dat het script
+daar rekening mee houdt!
+
+
+```{r count table, eval=FALSE}
+# Create object with input dir for bam files
+bam_dir <- "/home/daur2/rnaseq/rnaseq_onecut/bam/"
+
+# Create object with output dir for count tables
+counts_dir <- "~/daur2/toetsopdracht/counts/"
+
+# Create vector with names of bam files
+bam_files <- list.files(bam_dir, pattern = ".*[699,700,705,706]\\.bam$", full.names = TRUE)
+
+# Count the reads per gene using the in-built NCBI RefSeq annotations. strandSpecific = 1, want stranded protocol
+read_counts <- featureCounts(
+  
+  files = bam_files,
+  annot.inbuilt = "hg38",
+  useMetaFeatures = TRUE,
+  strandSpecific = 1,
+  isPairedEnd = TRUE, 
+  countReadPairs = TRUE, 
+  nthreads = 10
+)
+```
+
+## opdracht 4
+Gebruik de count table en het csv bestand met sample informatie om een DESeq2 object te
+maken.
+```{r DESeq2 object, eval=T}
+# NB: to create a DESeq object, it is important that the row names of the metadata are similar to the column names of the count matrix. Also, because we need an object with rownames, we have to work with dataframes instead of tibbles.
+
+# inladen count table
+read_counts_OC3<- readRDS("/home/daur2/rnaseq/rnaseq_onecut/counts/read_counts_OC3.rds")
+
+
+# verkrijgen van de count matrix
+count_matrix_OC3 <- read_counts_OC3$counts
+
+
+## maken dataframe met experiment details over elk sample (metadata)
+# importeren van de sampledata
+metadata_OC3 <- read_csv("/home/daur2/rnaseq/rnaseq_onecut/onecut_sampledata_OC3.csv")
+
+# sampledata omzetten naar een dataframe
+metadata_OC3 <- as.data.frame(metadata_OC3)
+
+# toevoegen van rijnamen zodat elke rij een bamfile naam heeft, zodat het overeenkomt met de count table
+rownames(metadata_OC3) <- paste0(metadata_OC3$Run, ".bam")
+
+# controleren of de kolomnamen van de count table gelijk zijn aan de rijnamen van de metadata
+colnames(count_matrix_OC3) == rownames(metadata_OC3)
+
+
+# maken van een kolom met de test condities. In de factor eerst de controle zodat deze wordt gezien als de basis waarmee je de behandeling van ONECUT3 vergelijkt. 
+metadata_OC3 <- metadata_OC3 %>% mutate(treatment = c("BCLXL", "BCLXL", "ONECUT3", "ONECUT3"))
+metadata_OC3$treatment <- metadata_OC3$treatment %>% factor(levels = c("BCLXL", "ONECUT3"))
+
+levels(metadata_OC3$treatment)
+
+
+# maken van DESeq2 object
+dds_OC3 <- DESeqDataSetFromMatrix(
+  countData = count_matrix_OC3,
+  colData = metadata_OC3, 
+  design = ~ treatment
+)
+```
+
+## opdracht 5
+5. Voer een PCA analyse uit. Gebruik de resultaten voor de volgende opdrachten:
+```{r PCA analyse}
+# normaliseren van de data, 
+dds_OC3_normalized <- rlog(dds_OC3)
+
+# Perform PCA 
+pca_OC3 <- dds_OC3_normalized %>% assay() %>% t() %>% prcomp()
+
+# Find the proportion of variance explained by each PC
+pca_OC3_summary <- summary(pca_OC3)$importance
+
+```
+
+
+a. Maak een staafdiagram met daarin voor elke PC (PC1 t/m PC4) het percentage
+variatie dat wordt verklaard door die PC. Bijvoorbeeld: stel dat PC1 80% van de
+variatie verklaard, dan moet er voor PC1 een staaf in de grafiek komen met een
+hoogte van 80%; hetzelfde voor PC2 t/m PC4.
+```{r staafdiagram PCA, eval=TRUE}
+
+pca_OC3_summary_t<- pca_OC3_summary %>% t()
+colnames(pca_OC3_summary_t)<- c("Standard_deviation", "Proportion_of_Variance", "Cumulative_Proportion")
+pca_OC3_summary_t<- pca_OC3_summary_t %>% as_tibble() %>% mutate(perc_variance= Proportion_of_Variance*100, PC= colnames(pca_OC3_summary))
+
+
+pca_OC3_summary_t
+
+
+pca_OC3_summary_t %>% ggplot(aes(x = PC, y = perc_variance)) +
+  geom_col(aes(fill = PC), show.legend = FALSE) +
+  ggtitle("Proportion of variance for each principal component") +
+  xlab("principal component") +
+  ylab("Percentage of variance") +
+  theme_bw() +
+  geom_text(aes(label = round(perc_variance,1)), vjust = -0.2)+
+  theme(axis.text.x = element_text(angle = 0)) +
+  coord_cartesian (ylim =c(0,100))
+```
+
+b. Maak een grafiek voor PC1 versus PC2. Kleur de punten op basis van de behandeling.
+```{r PCA , eval=TRUE}
+# Create data frame with metadata and the PCA values for plotting
+pca_plotting <- cbind(metadata_OC3, pca_OC3$x)
+
+# Obtain the percentages of variation covered by PC1 and PC2
+PC1_var <- round(pca_OC3_summary["Proportion of Variance", "PC1"]*100, digits = 1)
+PC2_var <- round(pca_OC3_summary["Proportion of Variance", "PC2"]*100, digits = 1)
+
+# Plot PC1 vs PC2
+ggplot(pca_plotting) + 
+  geom_point(aes(x=PC1, y=PC2, color = treatment, shape = Cell_type), size = 5) +
+  ggtitle("PCA for OC3 brain study") +
+  xlab(paste0("PC1 (", PC1_var, "%)")) +
+  ylab(paste0("PC2 (", PC2_var, "%)")) +
+  theme_bw()
+```
+
+
+
+c. Noteer voor zowel de grafieken bij onderdeel (a) en (b) jullie observaties in jullie
+Rmarkdown bestand.
+
+In de eerste grafiek is de weging van de verschillende principal components te zien. Er is duidelijk te zien dat de eerste principal component veruit de grootste is (92.7%). In de PCA is te zien dat de PC1 aan de hand van de verschillende behandelingen (BCLXL en ONECUT3). dit willen graag zien omdat er verwacht werd dat de behandelingen een verandering in genexpressie zou veroorzaken en dat dit de grootste verandering is. 
+
+
+
+
+## 6. Voer de DGE analyse uit met behulp van DESeq2. Gebruik de resultaten voor de volgende opdrachten:
+
+### a. Maak een Volcano plot waarin je alle genen met een adjusted p-value < 0.01 and
+|LFC| > 1 donkeroranje maakt. Geef de LFC en p-waarde thresholds in de plot weer
+als stippellijnen. 
+Geef ook in de grafiek aan hoeveel genen er upgereguleerd zijn bij
+deze thresholds en hoeveel genen er downgereguleerd zijn; geef deze aantallen
+weer als tekst in de grafiek (op de juiste plaats!).
+
+```{r vulcano plot}
+# Perform the DGE analysis using DESeq2
+OC3_dge <- DESeq(dds_OC3)
+
+# Obtain the results for the DGE analysis
+OC3_dge_results <- results(OC3_dge)
+OC3_dge_results
+
+# Obtain the summary of the results
+summary(OC3_dge_results)
+
+# bepalen aantalgenen met  significant p-value
+sign_genes_OC3 <- OC3_dge_results[which(OC3_dge_results$padj < 0.01),]
+
+# bepalen van hoeveelheid genes geupreguleerd bij threshold 1
+upregulated_genes <- sign_genes_OC3[which(sign_genes_OC3$log2FoldChange > 1),]
+
+total_upregulated_genes<- nrow(upregulated_genes)
+
+total_upregulated_genes1<- paste0("up: ", total_upregulated_genes)
+
+# bepalen van hoeveelheid genes gedownreguleerd bij threshold -1
+downregulated_genes <- sign_genes_OC3[which(sign_genes_OC3$log2FoldChange < -1),]
+
+total_downregulated_gens<- nrow(downregulated_genes)
+
+total_downregulated_gens1<- paste0("down: ", total_downregulated_gens)
+# Create a dataframe for plotting without genes with padj = NA
+OC3_dge_plotting <- data.frame(OC3_dge_results) %>% filter(!is.na(padj))
+
+# Create column specifying if gene is significantly differentially expressed
+OC3_dge_plotting <- OC3_dge_plotting %>% 
+  mutate(signif = if_else(padj < 0.01 & abs(log2FoldChange) > 1, 
+                          "Significant", "Not significant"))
+
+# Create a volcano plot
+OC3_dge_plotting %>% 
+  ggplot(aes(x = log2FoldChange, y = -log10(padj), color = signif)) +
+  geom_point() + 
+  xlab("log2 fold change") +
+  ylab("-log10 adjusted p-value") + 
+  theme_bw() +
+  
+  # Change the legend text and the colours
+  scale_colour_manual(values = c("grey", "darkorange"), name = "Significance")+
+  
+  #threshold LFC en p.value
+   geom_hline(yintercept = -log10(0.01), linetype = "dashed") +
+  geom_vline(xintercept = 1, linetype = "dashed") +
+  geom_vline(xintercept = -1, linetype = "dashed") +
+    coord_cartesian (ylim =c(0,250))+
+
+# Annotate the total upregulated genes
+  annotate("text", x = 7, y = 100, 
+           label = total_upregulated_genes1, colour = "red")+
+  
+  # Annotate the total downregulated genes
+  annotate("text", x = -6, y = 100, 
+           label = total_downregulated_gens1, colour = "blue")
+```
+In deze grafiek is een vulcanoplot te zien met daarin alle genen die zijn gevonden in de twee verschillende condities. Er is een threshhold gesteld voor een adjusted P value van 0.01 wat in de grafiek te zien is als een horizontale stippel lijn. De genen die onder deze lijn vallen zijn is het grijs weergegeven en zijn niet significant verschillend genoeg. Ook zijn er twee verticale stippellijnen te zien die de threshhold voor de log2 fold change stellen op 1 en -1. De genen die hierbuiten vallen zijn ook niet significant en dus ook in het grijs aangegeven. Op de x-as is de log2 fold change te zien. Deze geeft aan hoeveel een een gen verschild tussen de controle en de ONECUT3 groep. Als dit negatief is zoals aan de linker kant te zien is dan zijn de genen down gereguleerd en als dit positief is zijn ze upgereguleerd. De hoeveelheid up en down gereguleerde genen zijn in de grafiek aagevenen in respectiefelijk rood en blauw.
+
+
+
+b. Maak een heatmap met daarin de count values voor de 5 meest upgereguleerde
+genen en de 5 meest downgereguleerde genen. Selecteer alleen genen met een
+adjusted p-waarde < 0.01. Zorg ervoor dat de rijen van de heatmap gelabeld worden
+met het gensymbool i.p.v. de Entrez identifier.
+
+```{r heatmap}
+# filteren data op juiste Pwaarde
+OC3_dge_results_padj<- OC3_dge_results %>% as.data.frame() %>% filter(padj < 0.01)
+
+
+# verkrijgen van de top 5 upgereguleerde genen
+top5_upgenes_ipsc <- rownames(OC3_dge_results_padj[order(OC3_dge_results_padj$log2FoldChange, decreasing = TRUE)[1:5],])
+
+# verkrijgen van de top 5 downgereguleerde genen
+top5_downgenes_ipsc <- rownames(OC3_dge_results_padj[order(OC3_dge_results_padj$log2FoldChange, decreasing = FALSE)[1:5],])
+
+# samenvoegen top 5 up en downgereguleerde genes
+top10_genes_OC3<- c(top5_upgenes_ipsc, top5_downgenes_ipsc)
+
+# Obtain the gene identifiers of the 15 most significant genes
+count_values_OC3 <- assay(dds_OC3)[top10_genes_OC3,]
+
+
+
+# Create an extra column with the Entrez id (based on rownames)
+count_values_OC3_entrez <- data.frame(count_values_OC3) %>% mutate(entrezid = rownames(count_values_OC3))
+
+
+
+# Obtain the gene symbols based on the Entrez identifiers
+count_values_OC3_entrez$symbol <- mapIds(org.Hs.eg.db,
+                             keys = count_values_OC3_entrez$entrezid,
+                             column = "SYMBOL",
+                             keytype = "ENTREZID",
+                             multiVals = "first")
+
+rownames(count_values_OC3)<- count_values_OC3_entrez$symbol
+
+count_values_OC3
+
+
+
+# Replace the column names with conditions
+colnames(count_values_OC3) <- colData(dds_OC3)$treatment
+
+pheatmap(count_values_OC3,  scale = "row", show_rownames = TRUE)
+```
+Hierboven is de heatmap van de genen te zien. Op de x-as staan de transcriptiefactoren en op de y-as staan de gen symbolen van de top 5 up- en downregulated genen. Op de schaal is te zien dat naarmate de kleur roder wordt het gen meer upregulated is, des te blauwer is het gen meer downgereguleerd zijn. De eerste 5 genen zijn upgereguleerd. dit is te zien aan de rode kleur in de ONECUT3 kolommen, daarnaast zijn deze genen blauwgekleurd in de BCLXL kolommen wat overeenkomt met downregulatie. De downgereguleerde genen zijn gespiegeld ten op zichte van de upgereguleerde genen met in de ONECUT3 downregulatie en in de BCLXL upregulatie. Wat ook opvalt is dat het ONECUT3 gen geupreguleerd is, wat te verwachten is aangezien dat toegevoed is in de behandelig.
+
+
+
+
+## opdracht 7
+Schrijf een functie die voor een gegeven GO term identifier (bijvoorbeeld “GO:0036003”) de
+gensymbolen van de geassocieerde genen kan opzoeken. De functie moet aan de volgende
+voorwaarden voldoen:
+• De functie moet gebruik maken van de org.Hs.eg.db library.
+• De functie moet alle geassocieerde genen opzoeken en terug geven.
+• De output van de functie moet een character vector zijn.
+
+
+
+
+```{r functie Goterm to symbol}
+Goid_to_symbol<- function(Goterm){
+
+# Find the associated GO terms
+# search for ENTREZID
+Go_term_symbol<- select(org.Hs.eg.db,
+                                  keys = Goterm,
+                                  column = c("SYMBOL"),
+                                  keytype = "GO",
+                                  multiVals = "first")
+
+return(Go_term_symbol$SYMBOL)
+
+
+}
+
+# chech of functie het doet
+Goid_to_symbol("GO:0036003")
+```
+## opdracht 8
+Voer een GO term enrichment analyse uit voor de upgereguleerde genen (gedefinieerd als
+adjusted p-value < 0.01 en LFC > 1) en voor de downgereguleerde genen (gedefinieerd als
+adjusted p-value < 0.01 en LFC < -1). Maak voor beide analyses een grafiek.
+
+```{r Go term enrichment analyse}
+# GO term enrichment analyse voor upreguleerde  en downreguleerde genen
+
+# Create a list of upregulated genes
+upregulated_genes_OC3 <- OC3_dge_results %>% data.frame() %>% 
+  filter(log2FoldChange > 1, padj < 0.01) %>% rownames()
+
+#Create a list of downregulated genes
+downregulated_genes_OC3 <- OC3_dge_results %>% data.frame() %>% 
+  filter(log2FoldChange < -1, padj < 0.01) %>% rownames()
+
+# Create a list of all genes in the dataset
+all_genes_OC3 <- OC3_dge_results %>% data.frame() %>% rownames()
+
+# Perform GO term enrichment analysis for upregulated genes
+upregulated <- new("GOHyperGParams",
+                   geneIds = upregulated_genes_OC3,
+                   universeGeneIds = all_genes_OC3, 
+                   annotation = "org.Hs.eg.db", 
+                   ontology = "BP", 
+                   pvalueCutoff = 1,
+                   testDirection = "over")
+Upreg_OC3_goterm_analysis <- hyperGTest(upregulated)
+
+# Perform GO term enrichment analysis for downregulated genes
+downregulated <- new("GOHyperGParams",
+                   geneIds = downregulated_genes_OC3,
+                   universeGeneIds = all_genes_OC3, 
+                   annotation = "org.Hs.eg.db", 
+                   ontology = "BP", 
+                   pvalueCutoff = 1,
+                   testDirection = "over")
+downreg_OC3_goterm_analysis <- hyperGTest(downregulated)
+
+Upreg_OC3_goterm_analysis
+downreg_OC3_goterm_analysis
+
+```
+```{r go term enrichment analyse}
+
+# Obtains dataframe with results of GO term analysis for up and downregulated
+Up_goterm_analysis_results <- summary(Upreg_OC3_goterm_analysis)
+
+down_goterm_analysis_results <- summary(downreg_OC3_goterm_analysis)
+
+
+# Adjust the p values for multiple testing for up and downregulated
+Up_goterm_analysis_results$padj <- p.adjust(Up_goterm_analysis_results$Pvalue, method = "BH")
+
+down_goterm_analysis_results$padj <- p.adjust(down_goterm_analysis_results$Pvalue, method = "BH")
+
+
+# Select only gene sets that are larger than 5 but smaller for up and downregulated 
+# than 500 (to prevent taking along very small and very large
+# gene sets).
+Up_goterm_analysis_results <- Up_goterm_analysis_results %>% filter(Count > 5) %>% filter(Count < 500)
+
+down_goterm_analysis_results <- down_goterm_analysis_results %>% filter(Count > 5) %>% filter(Count < 500)
+
+
+# Select the top 20 GO terms for up and downregulated
+Up_goterm_analysis_top20 <- Up_goterm_analysis_results[order(Up_goterm_analysis_results$padj)[1:20],]
+
+down_goterm_analysis_top20 <- down_goterm_analysis_results[order(down_goterm_analysis_results$padj)[1:20],]
+
+
+
+
+# Plot the p-values of the top 20 GO terms for up and downregulated
+Up_goterm_analysis_top20$Term <- factor(Up_goterm_analysis_top20$Term, 
+                                     levels = Up_goterm_analysis_top20$Term[
+                                       order(Up_goterm_analysis_top20$padj, decreasing = TRUE)])
+
+
+Up_goterm_analysis_top20 %>% ggplot(aes(x = Term, y = -log10(padj))) +
+  geom_point() +
+  coord_flip() +
+  ylab(expression(-log[10](adjusted~italic(P)~value))) + 
+  xlab("GO terms") +
+  ggtitle("Top 20 enriched GO terms\n for upregulated genes") +
+  theme_bw()
+
+
+
+
+down_goterm_analysis_top20$Term <- factor(down_goterm_analysis_top20$Term, 
+                                     levels = down_goterm_analysis_top20$Term[
+                                       order(down_goterm_analysis_top20$padj, decreasing = TRUE)])
+
+down_goterm_analysis_top20 %>% ggplot(aes(x = Term, y = -log10(padj))) +
+  geom_point() +
+  coord_flip() +
+  ylab(expression(-log[10](adjusted~italic(P)~value))) + 
+  xlab("GO terms") +
+  ggtitle("Top 20 enriched GO terms\n for downregulated genes") +
+  theme_bw()
+
+
+
+
+
+```
+
+
+```{r go term enrichment analyse 2 in 1, eval=FALSE}
+###### om beide grafieken in een te stoppen (voor me zelf) ####################################################
+
+# Plot the p-values of the top 20 GO terms for up and downregulated
+Up_goterm_analysis_top20$Term <- factor(Up_goterm_analysis_top20$Term, 
+                                     levels = Up_goterm_analysis_top20$Term[
+                                       order(Up_goterm_analysis_top20$padj, decreasing = TRUE)])
+
+Up_plot<- Up_goterm_analysis_top20 %>% ggplot(aes(x = Term, y = -log10(padj))) +
+  geom_point() +
+  coord_flip() +
+  ylab(expression(-log[10](adjusted~italic(P)~value))) + 
+  xlab("GO terms") +
+  theme_bw()
+
+
+
+down_goterm_analysis_top20$Term <- factor(down_goterm_analysis_top20$Term, 
+                                     levels = down_goterm_analysis_top20$Term[
+                                       order(down_goterm_analysis_top20$padj, decreasing = TRUE)])
+
+down_plot<- down_goterm_analysis_top20 %>% ggplot(aes(x = Term, y = -log10(padj))) +
+  geom_point() +
+  coord_flip() +
+  ylab(expression(-log[10](adjusted~italic(P)~value))) + 
+  xlab("GO terms") +
+  theme_bw()
+
+
+
+plot_row <- plot_grid(Up_plot, down_plot, align = "v", nrow = 2, rel_heights = c(4, 4))
+
+title <- ggdraw() + 
+  draw_label(
+    "Go term enrichment analysis for OC3 study\nupregulated genes (up) downregulated genes (down)\n",
+    fontface = 'bold',
+    x = 0.2,
+    hjust = 0
+  ) +
+  theme(
+    # add margin on the left of the drawing canvas,
+    # so title is aligned with left edge of first plot
+    plot.margin = margin(0, 0, 0, 7)
+  )
+
+
+plot_grid(
+  title, plot_row,
+  ncol = 1,
+  # rel_heights values control vertical title margins
+  rel_heights = c(0.15, 1)
+)
+```
+
+
+
+Wat zijn jullie conclusies? Klopt het vermoeden van de onderzoekers dat ONECUT ervoor
+zorgt dat fibroblasten worden omgezet naar hersencellen? Vermeld jullie conclusie in jullie
+Rmarkdown.
+
+Hierboven zijn de biologische processen die gekoppeld zijn aan de gevonden GO-terms uitgezet tegen de -log10 van de adjusted P-value voor zowel de up als down regulated genen. Bij de upgereguleerde genen is er te zien dat er een redelijke hoeveelheid up gereguleerde genen invloed hebben op de metabole activiteit van de cel. Bij de downgereguleerde genen gaat het over celontwikkeling en celmotiliteit. De gevonden biologische processen van de upregulatie komen in grote lijnen overeen met de biologische processen die werden gevonden in het artikel. Echter kan er uit alleen de hier uitgevoerde analyse geen uitgebreide conclusie worden getrokken. Hiervoor is er met deze anlayse niet genoeg informatie verkregen en dient er verder onderzoek gedaan te worden.

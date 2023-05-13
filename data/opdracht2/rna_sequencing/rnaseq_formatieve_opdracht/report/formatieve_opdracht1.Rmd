@@ -1,0 +1,540 @@
+---
+title: "formatieve opdracht"
+author: "Kjettil Evers"
+date: "27-3-2023"
+output: html_document
+---
+Onderdeel 1a
+Schrijf een korte introductie voor de Rmarkdown met daarin in eigen woorden het doel van jouw onderzoek/analyses.
+
+geïnduceerde pluripotente stamcellen (iPSC) zijn stamcellen die uit huidcellen (fibroblasten) worden gemaakt. 
+De onderzoeksvraag van deze iPSC studie is: wat zijn de verschillen in genexpressie tussen iPSC en fibroblasten? 
+
+```{r}
+library(tidyverse)
+library(Rsubread)
+```
+
+
+Onderdeel 1b
+Stel dat de sample identifiers in een textfile staan. Schrijf een bash script voor het downloaden van de fastq files voor alle identifiers. Zorg ervoor dat dit script een for loop bevat, zodat je niet voor elke fastq file een aparte regel code hoeft te schrijven.
+
+NB: voer dit script niet uit, want de fastq files zijn al voor jullie gedownload!
+```{bash, eval = FALSE}
+for id in $(cat fastq_id.txt)
+do 
+fastq-dump --split-3 --outdir '/home/kjettil.evers/daur2/rnaseq_airway/fastq/' --gzip $id
+done
+```
+
+Onderdeel 1c
+Bekijk de FastQC html rapporten voor de verschillende fastq files. Wat zijn je conclusies?
+
+over het algemeen is de kwaliteit van de fastq files redelijk goed. wat opvalt is dat vooral aan het einde de per base sequence quality afneemt. maar deze ligt over het algemeen wel hoog genoeg om er mee te werken. de per sequence quality scores zien er ook goed uit dus de data is geschrikt om mee te werken
+SRR7866693_2.fastq lijkt geen goede data te hebben. bijna alles in oranje en rode gedeelte. (lage phred score)
+
+Onderdeel 1d
+Schrijf code voor het uitvoeren van de alignment met de Rsubread package. Voor de alignment kun je gebruik maken van de hg38 genome index die is te vinden /home/daur2/rnaseq/hg38_index/
+
+NB: voer dit script niet uit, want de alignment is al voor jullie uitgevoerd!
+```{r, eval = FALSE }
+
+library(tidyverse)
+# Load the Rsubread package
+library(Rsubread)
+
+# Create object with location of fastq files
+fastq_dir<- "/home/daur2/rnaseq/rnaseq_ipsc/fastq/."
+
+
+# Create object with basename of index files
+hg38_index<- "/home/daur2/rnaseq/hg38_index"
+
+# Create object with output dir for bam files
+
+bam_dir<- "~/daur2/formatieve_opdracht1/bamfiles"
+
+# Create a vector with sample numbers
+samples <- list.files(fastq_dir, pattern = "_[12].fastq.gz") %>% 
+  str_remove(pattern = "_[12].fastq.gz") %>%
+  unique()
+
+# Align the reads in the fastq files
+alignment_statistics <- align(
+  
+  index = hg38_index,
+  readfile1 = paste0(fastq_dir, samples, "_1.fastq.gz"), 
+  readfile2 = paste0(fastq_dir, samples, "_2.fastq.gz"),
+  type = "rna", input_format = "gzFASTQ", output_format = "BAM",
+  output_file = paste0(bam_dir, samples, ".bam"), 
+      
+  # report only uniquely mapping reads
+  unique = TRUE,
+      
+  # number of CPU threads
+  nthreads = 10
+      
+)
+
+# Store the alignment statistics as R object
+saveRDS(alignment_statistics, file = paste0(bam_dir, "alignment_statistics.rds"))
+
+
+
+```
+
+Onderdeel 1e
+In de directory met de bam files kun je ook het bestand ‘alignment_statistics.rds’ vinden. Gebruik dit bestand om een grouped bar graph te maken met daarin voor elk sample zowel het percentage mapped fragments als het percentage unmapped fragments.
+
+Wat is je conclusie op basis van deze grafiek?
+```{r}
+# Read the file into R
+alignment_stats <- readRDS("/home/daur2/rnaseq/rnaseq_ipsc/bam/alignment_statistics.rds")
+
+# Calculate the percentage of  (un)mapping fragments
+alignment_stats_t <- alignment_stats %>% 
+  t %>% 
+  as_tibble() %>% 
+  mutate(bamfile=colnames(alignment_stats)) %>%
+  mutate(perc_unique_mapped = Uniquely_mapped_fragments/Total_fragments*100, perc_mapped_fragments= Mapped_fragments/Total_fragments*100,
+         perc_unmapped_fragments = 100-perc_mapped_fragments)
+alignment_stats_t
+
+alignment_stats_t_tidy <- pivot_longer(data = alignment_stats_t, cols = c('perc_mapped_fragments', 'perc_unmapped_fragments'),  
+                             names_to = "fragments",  values_to = "percentage_mapped_unmapped")
+alignment_stats_t_tidy
+
+# Plot the percentages in a bar graph
+# Plot the percentages in a bar graph
+alignment_stats_t_tidy %>% ggplot(aes(x = bamfile, y = percentage_mapped_unmapped, fill= fragments)) +
+    geom_col(position = position_dodge()) +
+  ggtitle("Proportion of mapped and unmapped fragments for each sample") +
+  xlab("RNA-seq sample") +
+  ylab("Percentage of (un)mapped fragments") +
+  scale_fill_discrete(labels = c("mapped", "unmapped"))+
+    theme_bw() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  coord_cartesian (ylim =c(0,100))
+```
+
+vraag 2.
+Onderdeel 2a
+Schrijf code voor het genereren van de count table met de Rsubread package.
+
+NB: voer dit script niet uit, want de count table is al voor jullie gegenereerd!
+```{r eval=FALSE}
+# Load the required libraries
+library(Rsubread)
+
+# Create object with input dir for bam files
+bam_dir <- "/home/daur2/rnaseq/rnaseq_ipsc/bam/."
+
+# Create object with output dir for count tables
+counts_dir <- "~/daur2/formatieve_opdracht1/counts/"
+```
+
+
+```{r eval=FALSE}
+# Create vector with names of bam files
+bam_files <- list.files(bam_dir, pattern = ".*\\.bam$", full.names = TRUE)
+
+# Count the reads per gene using the in-built NCBI RefSeq annotations
+read_counts <- featureCounts(
+  
+  files = bam_files,
+  annot.inbuilt = "hg38",
+  useMetaFeatures = TRUE,
+  strandSpecific = 0,
+  isPairedEnd = TRUE, 
+  countReadPairs = TRUE, 
+  nthreads = 10
+)
+```
+
+
+Onderdeel 2b
+Gebruik de ‘stat’ dataframe uit de count table om een staafdiagram te maken met daarin het percentage assigned reads voor elk sample.
+
+Wat is je conclusie op basis van deze grafiek?
+
+```{r}
+# Load the count table into R
+read_counts_ipsc <- readRDS("/home/daur2/rnaseq/rnaseq_ipsc/counts/./read_counts.rds")
+
+# Inspect the count table object
+str(read_counts_ipsc)
+
+# Obtain the dataframe with the statistics
+count_stats <- read_counts_ipsc$stat
+view(count_stats)
+
+# Convert first column to rownames
+rownames(count_stats) <- count_stats$Status
+count_stats$Status <- NULL
+view(count_stats)
+
+
+# Calculate the percentage of uniquely counting fragments
+count_stats_t <- count_stats %>% 
+  t %>% 
+  as_tibble() %>% 
+  mutate(bamfile=colnames(count_stats)) %>%
+  mutate(Total=colSums(count_stats)) %>%
+  mutate(perc_assigned = Assigned/Total*100)
+count_stats_t
+
+# Plot the percentages in a bar graph
+count_stats_t %>% ggplot(aes(x = bamfile, y = perc_assigned)) +
+  geom_col() +
+  ggtitle("Proportion of assigned fragments for each sample") +
+  xlab("RNA-seq sample") +
+  ylab("Percentage of assigned fragments") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  coord_cartesian (ylim =c(0,100))
+
+
+```
+
+Conclusie: op de grafiek valt te concluderen dat 40-70% van de read zijn verbonden aan een gen. de overige reads komen uit een ander deel van het genoom
+
+
+Onderdeel 2c
+Gebruik de count table en het csv bestand met sample informatie om een DESeq2 object te maken.
+
+```{r}
+library(DESeq2)
+# Obtain the count matrix
+count_matrix <- read_counts_ipsc$counts
+
+# Import the sample data
+metadata <- read_csv("/home/daur2/rnaseq/rnaseq_ipsc/ipsc_sampledata.csv")
+metadata
+# Convert the metadata to dataframe object
+metadata <- as.data.frame(metadata)
+
+# Add rownames to the metadata dataframe
+rownames(metadata) <- paste0(metadata$Run, ".bam")
+
+# Show first lines of metadata object
+head(metadata)
+
+# Check if column names of count table are the same as row names of metadata object
+colnames(count_matrix) == rownames(metadata)
+
+# Create a column specifying the test condition
+metadata <- metadata %>% mutate(celtype = c("Fibroblast", "Fibroblast", "Fibroblast", "Fibroblast", "iPSC", "iPSC", "iPSC", "iPSC")) 
+metadata
+
+
+metadata$celtype <- metadata$celtype %>% factor(levels = c("Fibroblast", "iPSC"))
+
+
+levels(metadata$celtype)
+
+
+# Create the DESeqDataSet object
+dds_ipsc <- DESeqDataSetFromMatrix(
+  countData = count_matrix,
+  colData = metadata, 
+  design = ~ celtype
+)
+
+dds_ipsc
+dds_ipsc_normalized <- rlog(dds_ipsc)
+
+
+
+```
+vraag 2d
+Voer een PCA analyse uit en maak een plot van PC1 versus PC2.
+
+Wat is je conclusie op basis van deze plot?
+
+```{r}
+# Perform PCA on the iPSC study dataset
+pca <- dds_ipsc_normalized %>% assay() %>% t() %>% prcomp()
+
+
+# Find the proportion of variance explained by each PC
+pca_summary <- summary(pca)$importance
+pca_summary
+
+# Create data frame with metadata and the PCA values for plotting
+pca_plotting <- cbind(metadata, pca$x)
+
+# Obtain the percentages of variation covered by PC1 and PC2
+PC1_var <- round(pca_summary["Proportion of Variance", "PC1"]*100, digits = 1)
+PC2_var <- round(pca_summary["Proportion of Variance", "PC2"]*100, digits = 1)
+
+# Plot PC1 vs PC2
+ggplot(pca_plotting) + 
+  geom_point(aes(x=PC1, y=PC2, color = Cell_type, shape = source_name), size = 5) +
+  ggtitle("PCA for iPSC study") +
+  xlab(paste0("PC1 (", PC1_var, "%)")) +
+  ylab(paste0("PC2 (", PC2_var, "%)")) +
+  theme_bw()
+```
+
+conclusie: The first PC, PC1, captures about 80% of the variation in the data. Based on PC1, the samples are separated in two groups, which correspond to the different celtypes. This is something we want to see, because we expect that the different celtypes have different gene expression and that these changes are the biggest signal in the data.
+
+PC2 captures about 6% of the variation. we can see that all cell lines differ from each other. However, it is expected that any remaining variation in gene expression (besides the variation explained by celltype) is due to differences between the cell lines
+
+
+Onderdeel 2e
+Maak een heatmap waarin de correlatiecoëfficiënten voor de verschillende samples zijn weergegeven.
+
+Wat is je conclusie op basis van deze heatmap?
+
+```{r}
+# Extract the matrix from the normalized DESeq object
+dds_ipsc_normalized_matrix <- assay(dds_ipsc_normalized)    
+
+# Compute pairwise correlation values
+ipsc_cor <- cor(dds_ipsc_normalized_matrix)    
+ipsc_cor
+
+
+# Load pheatmap package
+library(pheatmap)
+
+# Plot heatmap using the correlation; annotate the heatmap based on the treatment
+pheatmap(ipsc_cor, annotation = metadata["celtype"])
+```
+conclusie:
+
+
+
+
+
+
+
+
+
+Onderdeel 3a
+Voer de DGE analyse uit met behulp van DESeq2. Hoeveel genen zijn er upgereguleerd (adjusted p-value < 0.05 en LFC > 1)? En hoeveel genen zijn er downgereguleerd (adjusted p-value < 0.05 en LFC < -1)?
+
+Vergelijk de aantallen met de aantallen voor de airway studie. Wat is je conclusie?
+
+```{r}
+ipsc_dge <- DESeq(dds_ipsc)
+ipsc_dge
+
+# Obtain the results for the DGE analysis
+ipsc_dge_results <- results(ipsc_dge, alpha = 0.05, lfcThreshold = 1)
+view(ipsc_dge_results)
+
+# Obtain the summary of the results
+summary(ipsc_dge_results)
+
+
+
+```
+ongeveer 3200 genen zijn geupreguleerd en ongeveer 2500 genen downreguleerd. vergeleken met de airway studie heeft deze studie veel meer up en downregulatie van genen. hieruit kan geconcludeerd worden dat .........................
+
+
+Onderdeel 3b
+Create a Volcano plot in which you colour all genes with an adjusted p-value < 0.05 and |LFC|>1 darkblue. Also indicate the LFC and p-value thresholds as dashed lines in the plot.
+
+```{r}
+################################################################# voor de lol
+# Obtain the genes with a significant p-value
+## sign_genes_ipsc <- ipsc_dge_results[which(ipsc_dge_results$padj < 0.05),]
+
+# Obtain the id of the most significantly upregulated gene
+## topGene_ipsc <- sign_genes_ipsc[which.max(sign_genes$log2FoldChange),]
+## topGene_name_ipsc <- rownames(topGene)
+## topGene_name_ipsc
+###############################################################
+
+# Create a dataframe for plotting without genes with padj = NA
+ipsc_dge_plotting <- data.frame(ipsc_dge_results) %>% filter(!is.na(padj))
+
+# Create column specifying if gene is significantly differentially expressed
+ipsc_dge_plotting <- ipsc_dge_plotting %>% 
+  mutate(signif = if_else(padj < 0.05 & abs(log2FoldChange) > 1, 
+                          "Significant", "Not significant"))
+
+
+
+# Create a volcano plot
+ipsc_dge_plotting %>% 
+  ggplot(aes(x = log2FoldChange, y = -log10(padj), color = signif)) +
+  geom_point() + 
+  xlab("log2 fold change") +
+  ylab("-log10 adjusted p-value") + 
+  theme_bw() +
+  
+  # Change the legend text and the colours
+  scale_colour_manual(values = c("grey", "darkblue"), name = "Significance")+
+  
+####################################################################################  voor de lol
+  # Annotate the most significantly upregulated gene
+ ## annotate("text", x = topGene_ipsc$log2FoldChange, y = -log10(topGene_ipsc$padj)*0.8, 
+   ##        label = topGene_name_ipsc, colour = "blue") +
+########################################################################################  
+  
+  #threshold LFC en p.value
+   geom_hline(yintercept = -log10(0.05), linetype = "dashed") +
+  geom_vline(xintercept = 1, linetype = "dashed") +
+  geom_vline(xintercept = -1, linetype = "dashed") +
+    coord_cartesian (ylim =c(0,250))
+
+```
+
+Onderdeel 3c
+Maak een heatmap met daarin de count values voor de 15 significante DE genen (adjusted p-waarde < 0.05) met de grootste |LFC|.
+
+```{r}
+# Obtain the gene identifiers of the 15 most significant genes
+ipsc_dge_results_padj<- ipsc_dge_results %>% as.data.frame() %>% filter(padj < 0.05)
+
+top15_genes_ipsc <- rownames(ipsc_dge_results_padj[order(abs(ipsc_dge_results_padj$log2FoldChange))[1:15],])
+
+# Obtain the count values for these genes
+count_values_ipsc <- assay(dds_ipsc)[top15_genes_ipsc,]
+count_values_ipsc
+# Replace the column names with conditions
+colnames(count_values_ipsc) <- colData(dds_ipsc)$source_name
+
+# Visualize the results in a heatmap
+pheatmap(count_values_ipsc,  scale = "row", show_rownames = TRUE)
+
+```
+
+les 4
+
+Onderdeel 4a
+Maak een heatmap zoals bij onderdeel 3c. Echter, zorg ervoor dat de rijen nu gelabeld worden met het gensymbool i.p.v. de Entrez identifier.
+
+```{r}
+library("org.Hs.eg.db")
+library(GOstats)
+
+# Create an extra column with the Entrez id (based on rownames)
+count_values_ipsc_gen <- data.frame(count_values_ipsc) %>% mutate(entrezid = rownames(count_values_ipsc))
+
+
+
+# Obtain the gene symbols based on the Entrez identifiers
+count_values_ipsc_gen$symbol <- mapIds(org.Hs.eg.db,
+                             keys = count_values_ipsc_gen$entrezid,
+                             column = "SYMBOL",
+                             keytype = "ENTREZID",
+                             multiVals = "first")
+
+rownames(count_values_ipsc)<- count_values_ipsc_gen$symbol
+
+count_values_ipsc
+
+
+
+# Replace the column names with conditions
+colnames(count_values_ipsc) <- colData(dds_ipsc)$source_name
+
+pheatmap(count_values_ipsc,  scale = "row", show_rownames = TRUE)
+
+
+```
+
+Onderdeel 4b
+Schrijf een functie voor het uitvoeren van de GO term enrichment analyse. Deze functie heeft 4 input argumenten:
+
+DESeq2 results object (results(DESeq(dds)))
+
+Logische waarde (TRUE of FALSE) die aangeeft of de enrichment analyse gedaan moet worden voor de upgereguleerde genen of voor de downgereguleerde genen.
+
+Drempelwaarde voor |LFC|.
+
+Drempelwaarde voor adjusted p-waarde.
+
+De output van de functie is de summary van de GO term analyse (summary(hyperGTest(test_object)))
+
+Bijvoorbeeld: gotermAnalysis(ipsc_dge_results, upregulated = FALSE, 1, 0.01) geeft de summary van de enrichment analyse voor de downgereguleerde genen met een LFC < -1 en een adjusted p-waarde < 0.01 voor de genen in het DESeq2 results object ipsc_dge_results.
+
+```{r}
+gotermAnalysis<- function(dge_results, upregulated, lfcthreshold, padjthershold) {
+  
+  # Load the GOstats library
+library(GOstats)
+  
+if(upregulated == TRUE){
+
+regulated<- "upregulated"  
+
+# Create a list of upregulated genes
+regulated_genes <- dge_results %>% data.frame() %>% 
+  filter(log2FoldChange > lfcthreshold, padj < padjthershold) %>% rownames()
+
+}else if (upregulated == FALSE)  {
+  
+  regulated<- "downregulated"  
+  
+# Create a list of upregulated genes
+regulated_genes <- dge_results %>% data.frame() %>% 
+
+    filter(log2FoldChange < -lfcthreshold, padj < padjthershold) %>% rownames()
+}
+
+  
+# Create a list of all genes in the dataset
+all_genes <- dge_results %>% data.frame() %>% rownames()
+
+# Perform GO term enrichment analysis
+GO_term <- new("GOHyperGParams",
+                   geneIds = regulated_genes,
+                   universeGeneIds = all_genes, 
+                   annotation = "org.Hs.eg.db", 
+                   ontology = "BP", 
+                   pvalueCutoff = 1,
+                   testDirection = "over")
+goterm_analysis <- hyperGTest(GO_term)
+
+
+# Obtains dataframe with results of GO term analysis
+goterm_analysis_results <- summary(goterm_analysis)
+
+goterm_analysis_results
+
+# Adjust the p values for multiple testing
+goterm_analysis_results$padj <- p.adjust(goterm_analysis_results$Pvalue, method = "BH")
+
+# Select only gene sets that are larger than 5 but smaller 
+# than 500 (to prevent taking along very small and very large
+# gene sets).
+goterm_analysis_results <- goterm_analysis_results %>% filter(Count > 5) %>% filter(Count < 500)
+
+# Select the top 20 GO terms
+goterm_analysis_top20 <- goterm_analysis_results[order(goterm_analysis_results$padj)[1:20],]
+
+# Plot the p-values of the top 20 GO terms
+goterm_analysis_top20$Term <- factor(goterm_analysis_top20$Term, 
+                                     levels = goterm_analysis_top20$Term[
+                                       order(goterm_analysis_top20$padj, decreasing = TRUE)])
+goterm_analysis_top20 %>% ggplot(aes(x = Term, y = -log10(padj))) +
+  geom_point() +
+  coord_flip() +
+  ylab(expression(-log[10](adjusted~italic(P)~value))) + 
+  xlab("GO terms") +
+  ggtitle(paste("Top 20 enriched GO terms\n for", regulated, "genes")) +
+  theme_bw()
+
+}
+```
+
+
+
+vraag 4 c
+```{r}
+gotermAnalysis(ipsc_dge_results, upregulated = TRUE, 1, 0.01)
+
+```
+
+```{r}
+gotermAnalysis(ipsc_dge_results, upregulated = FALSE, 1, 0.01)
+
+```
+
+uit de grafiek is af te lezen dat genen voor het bloedvatenstelsel wordt geupreguleerd in de IPSC en dat de genen voor neuron development worden gedownreguleerd.
+
+
