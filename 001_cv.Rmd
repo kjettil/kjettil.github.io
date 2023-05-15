@@ -1,0 +1,3 @@
+```{r cv, echo=F, out.width="100%", out.height="1500"}
+knitr::include_graphics('data/opdracht3/Kjettil-Evers2.pdf')
+```

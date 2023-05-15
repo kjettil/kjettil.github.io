@@ -1,0 +1,80 @@
+---
+name: Kjettil
+surname: Evers
+position: "Analist"
+address: "Amersfoort, Nederland"
+phone: +31 6 81568052
+profilepic: kjettilevers.jpeg
+www:
+headcolor: 990000
+email: "kjettil1@gmail.com"
+github: Kjettil
+linkedin: Kjettil Evers
+date: "`r format(Sys.time(), '%B %Y')`"
+output:
+  vitae::awesomecv:
+    page_total: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+packages <- c('vitae'     # The CV's LaTeX Template
+             ,'tibble'    # Data structure for tribbles
+             ,'magrittr'  # The Pipe %>%
+             ,'here'      # Relative File Paths
+             ,'readr'     # Data Loading
+             ,'glue'      # String Manipulation
+            )
+xfun::pkg_attach2(packages, message = FALSE)
+
+
+source(file = here("opdracht3_1", "Data.r"))
+```
+
+# Skills
+
+ * Talen: Nederlands en Engels
+ * oplossingsgericht
+ * Samenwerken in team verband
+
+ 
+# werkervaring
+
+```{r werkervaring}
+work %>%
+  detailed_entries(
+    with = title,
+    what = unit,
+    why = detail,
+    when = glue::glue("{startMonth} {startYear}-{endMonth} {endYear}",.na = "")
+  )
+```
+
+
+# Opleiding
+
+```{r opleiding}
+library(tibble)
+education %>%
+  detailed_entries(
+    with = title,
+    what = unit,
+    why = detail,
+    when = glue::glue("{startMonth} {startYear}-{endMonth} {endYear}",.na = "")
+  )
+
+```
+
+# stage
+``` {r stages}
+library(tibble)
+stage %>%
+  detailed_entries(
+    with = title,
+    what = unit,
+    why = detail,
+    when = glue::glue("{startMonth} {startYear}-{endMonth} {endYear}",.na = "")
+  )
+
+```
