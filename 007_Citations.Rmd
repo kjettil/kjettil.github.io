@@ -1,0 +1,13 @@
+# Citations using Zotero
+
+In this exercise I wrote an introduction for my project, in dutch, using the Zotero citation tool.  
+
+## Introductie
+Anabolische resistentie of een slechte eiwitsynthese response op anabole stimuli in ouderen, kan leiden tot verlies van spiermassa. Het verliezen van spiermassa wordt ook wel Sarcopenie genoemd. [@boirieFastDigestiveProteins2018; @vandijkImprovedMuscleFunction2016]  Spieronderhoud is afhankelijk van aminozuren. Eén van de aminozuren die een hoge anabole stimulus veroorzaakt, is leucine. Dit komt omdat leucine de eigenschap heeft om mTORC1 te activeren, wat vervolgens zowel p70s6k als 4E-BP1 activeerd. Dit zijn belangrijke factoren, omdat deze beide de spier eiwitsynthese (MPS) activeren. @dijkDifferentialEffectsLeucine2018 Uit studies is gebleken, dat MPS in skeletspieren bij jonge ratten, na het opnemen van enkele orale dosis leucine, wordt gestimuleerd. @crozierOralLeucineAdministration2005 Het artikel van [@dardevetStimulationVitroRat2000] bevestigd de aanwezigheid van anabole resistentie tegen leucine in oude ratten na toediening van alleen leucine via een orgaanbad. Echter over een orale toediening van leucine in cominatie met andere voedingsstoffen bij oudere ratten is nog niet veel bekend. 
+
+Het doel van deze studie was het onderzoeken van het effect van leucine in losse vorm of in de aanwezigheid van whey protein op MPS en de activatie van mTOR signaalroute in oudere muizen. Om de relavantie van leucine en andere aminozuren te bepalen is het vrije aminozuurgehalte in plasma en spier bepaald.
+
+Aan ons de taak, om met behulp van R, een code te schrijven die in één oogopslag een duidelijk visueel beeld geeft van de bepaling. Waarin goed te zien is wat de effecten op de vrije aminozuren na toevoegen van leucine en andere factoren zijn. 
+
+
+# Referenties

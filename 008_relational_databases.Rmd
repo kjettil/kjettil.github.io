@@ -1,0 +1,274 @@
+---
+title: "opdracht7"
+author: "Kjettil Evers"
+date: "2023-05-15"
+output: html_document
+---
+
+# relational databases
+
+In this exercise I will be using a relational database. this is a type of database that stores and provides access to data points that are related to one another. I will be using DBeaver to combine the Gapminder dataset with 2 other datasets containing flu/dengue google searches per country over the years.
+
+
+I used the following librarys for this exercise:
+```{r message=FALSE, warning=FALSE}
+library(png)
+library(grid)
+library(gridExtra)
+library(DBI)
+library(tidyverse)
+library(readxl)
+library(readr)
+library(dslabs)
+library(tidyverse)
+library(hablar)
+library(DBI)
+library(RPostgreSQL)
+
+```
+The first step is to load and inspect the Flu (./data/flu_data.csv), dengue (“./data/dengue_data.csv) and gapminder data ({dslabs} package) available [here](https://github.com/DataScienceILC/tlsc-dsfb26v-20_workflows)
+
+```{r load data, message=FALSE, warning=FALSE}
+
+flu_data <- read_csv("https://raw.githubusercontent.com/DataScienceILC/tlsc-dsfb26v-20_workflows/main/data/flu_data.csv", 
+    skip = 10)
+head(flu_data)
+
+dengue_data <- read_csv("https://raw.githubusercontent.com/DataScienceILC/tlsc-dsfb26v-20_workflows/main/data/dengue_data.csv", 
+    skip = 10)
+head(dengue_data)
+
+
+gap_data<- gapminder
+head(gap_data)
+```
+
+after inspecting the data I made the flu and dengue data tidy and alterd the data so it will be easier to merge with the gapminder data late on
+```{r flu data tidy, message=FALSE, warning=FALSE}
+
+
+#make flu_data tidy
+flu_data_tidy<- pivot_longer(data = flu_data, cols = -c('Date'),  
+                             names_to = "country",  values_to = "flu_searches")
+
+# remove month and day from Date
+flu_data_tidy$Date<- str_sub(flu_data_tidy$Date, start =1, end = 4)
+
+#rename date to year
+flu_data_tidy<- rename(flu_data_tidy, year = Date)
+
+# group by date and country to get all searches of that year in one row
+flu_data_tidy<- flu_data_tidy %>% group_by(year, country) %>% summarize(flu_searches = sum(flu_searches))
+
+#change NA to 0 searches
+flu_data_tidy[is.na(flu_data_tidy)]<- 0
+
+# now it is good to join with gapminder 
+head(flu_data_tidy)
+```
+
+```{r dengue data tidy, message=FALSE, warning=FALSE}
+#make dengue_data tidy
+dengue_data_tidy<- pivot_longer(data = dengue_data, cols = -c('Date'),  
+                             names_to = "country",  values_to = "dengue_searches")
+
+# remove month and day from Date
+dengue_data_tidy$Date<- str_sub(dengue_data_tidy$Date, start =1, end = 4)
+
+#rename date to year
+dengue_data_tidy<- rename(dengue_data_tidy, year = Date)
+
+# group by date and country to get all searches of that year in one row
+dengue_data_tidy<- dengue_data_tidy %>% group_by(year, country) %>% summarize(dengue_searches = sum(dengue_searches))
+
+#change NA to 0 searches
+dengue_data_tidy[is.na(dengue_data_tidy)]<- 0
+
+# now it can be joined with gapminder and flu_data
+head(dengue_data_tidy)
+```
+
+After making both the flu data and dengue data tidy, I fixed the variables in terms of data type, class and values. 
+I changed these datasets so that the data type, class and values are the same as the Gapminder data to avoid problems in merging later on 
+
+```{r message=FALSE, warning=FALSE}
+
+#fixing variables so they match with each other and coincide in terms of data type, class and values
+#flu_data
+flu_data_tidy<- as.data.frame(flu_data_tidy) %>% convert(int(year))
+flu_data_tidy$country<- as.factor(flu_data_tidy$country) 
+head(flu_data_tidy)
+
+#dengue_data
+dengue_data_tidy <- as.data.frame(dengue_data_tidy) %>% convert(int(year))
+dengue_data_tidy$country<- as.factor(dengue_data_tidy$country) 
+head(dengue_data_tidy)
+
+```
+After I finised fixing al the datasets I stored as both csv and rds with the following code
+```{r store data, eval=FALSE, message=FALSE, warning=FALSE}
+#store data as csv and rds
+#flu data
+write.csv(flu_data_tidy, "data\\flu_data_tidy.csv", row.names=FALSE)
+saveRDS(flu_data_tidy, file = "data/flu_data_tidy.rds")
+
+#dengue data
+write.csv(dengue_data_tidy, "data\\dengue_data_tidy.csv", row.names=FALSE)
+saveRDS(dengue_data_tidy, file = "data/dengue_data_tidy.rds")
+
+#gapminder data
+write.csv(gap_data, "data\\gap_data.csv", row.names=FALSE)
+saveRDS(gap_data, file = "data/gap_data.rds")
+```
+
+The next step was to setup a database in DBeaver. I called the database workflowsdb. 
+
+Using RPostgreSQL, I inserted the datasets from earlier in the workflowsdb dataset
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+
+con
+
+dbWriteTable(con, "flu_data_tidy", flu_data_tidy, overwrite = TRUE)
+dbWriteTable(con, "dengue_data_tidy", dengue_data_tidy, overwrite = TRUE)
+dbWriteTable(con, "gap_data", gap_data, overwrite = TRUE)
+
+
+```
+
+In DBeaver I inspected the data again to see if everthing was oke and all datasets where present. I added a screenshot of my DBeaver program, showing SQL code (upper right corner) and a preview of the flu data (bottom right corner)
+```{r images, echo=FALSE, fig.height=7, out.width= '100%', fig.cap="Fig. 1: inspecting the contents of the tables with SQL in DBeaver" }
+
+img1 <-  rasterGrob(as.raster(readPNG("dbeaver.png")))
+
+grid.arrange(img1, top=textGrob("Data inspection using SQL in DBeaver", gp=gpar(fontsize=10,font=8)))
+```
+
+
+
+I also inspected the data using R with the Head() function as seen below
+```{r message=FALSE, warning=FALSE}
+flu_data_tidy %>% head()
+dengue_data_tidy %>% head()
+gap_data %>% head()
+```
+
+
+Because of the changes I made in the flu data and dangue data in beginning. I could easily merge the data of both flu and dengue to the gapminder data. I used inner join so that if there is not a match between the country,year and 
+ flu/dengue searches it is removed from the table. I called the merged dataset "results"
+ This is seen in the image below
+ 
+```{r img2, echo=FALSE, fig.height=7, out.width= '100%', fig.cap="Fig. 2: inspecting the contents of the tables with SQL in DBeaver" }
+
+img2 <-  rasterGrob(as.raster(readPNG("innerjoin.png")))
+
+grid.arrange(img2, top=textGrob("Data inspection using SQL in DBeaver", gp=gpar(fontsize=10,font=8)))
+```
+
+I loaded the joined data in with the following code:
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+results<- read_csv("data/results_202305231341.csv")
+
+```
+
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+results <- dbReadTable(con, "results")
+
+```
+```{r}
+head(results)
+```
+
+After reviewing the results data i used summary() to show descriptive statistics. It displays minimum, 1st quartile, median, mean, 3rd quartile, and maximum values for numeric variables, and counts for factors.
+
+```{r}
+# Summary statistics
+summary(results)
+
+```
+
+At last I made various ggplots to visualize data from the joined dataset
+The first two ggplot are the basic ggplot showing the flu and dengue searches over the year 
+```{r basic ggplots, , message=FALSE, warning=FALSE}
+library(ggplot2)
+library(ggbreak) 
+library(gganimate)
+library(viridis)
+
+
+results %>% ggplot(aes(x = year, y = flu_searches)) + 
+  geom_line(aes(colour = country))+
+  labs(title = "Flu searches over the years per country",
+       y = "flu searches",
+       x = "year") 
+
+results %>% ggplot(aes(x = year, y = dengue_searches)) + 
+  geom_line(aes(colour = country)) +
+  labs(title = "dengue searches over the years per country",
+       y = "dengue searches",
+       x = "year")
+
+
+
+
+```
+Next I joined the ggplots to become one with the following code:
+
+```{r combined ggplot, message=FALSE, warning=FALSE}
+
+
+results_tidy<- results %>% 
+  rename(
+    flu = flu_searches,
+    dengue = dengue_searches
+    )
+
+results_tidy<- pivot_longer(data = results_tidy, cols = c('flu', 'dengue'),  
+                             names_to = "disease",  values_to = "searches")
+
+
+
+
+
+results_tidy
+
+ggplot(data=results_tidy, aes(x=year, y=log10(searches), color=country, shape = disease)) +
+    geom_line() +
+    geom_point()+
+  ylim(0.0, 5)
+    
+```   
+
+I also made a ggplot showing the relation between the population of mexico and flu searches on google
+```{r plot mex population, message=FALSE, warning=FALSE}
+mexico <-results %>% filter(country  == "Mexico") 
+
+cor_coefficient_mex<- round(cor.test(mexico$population, mexico$flu_searches, method=c("pearson"))$estimate,1)
+
+ mexico %>% ggplot(aes(x = population, y = flu_searches)) + 
+  geom_point(aes(colour = "red"), show.legend = FALSE) +
+   labs(title = "Relation between the population of mexico \nand flu searches on google",
+       y = "flu searches",
+       x = "population") +
+  annotate("text", x = 108000000, y = 65000, size=4,
+           label = paste("pearson's r = ", cor_coefficient_mex))
+    
+```
+
+
+and i made this ggplot showing Relation between the population of Brazil and dengue searches on google
+```{r message=FALSE, warning=FALSE}
+Brazil <-results %>% filter(country  == "Brazil") 
+
+cor_coefficient_brazil<- round(cor.test(Brazil$population, Brazil$dengue_searches, method=c("pearson"))$estimate,1)
+
+ Brazil %>% ggplot(aes(x = population, y = dengue_searches)) + 
+  geom_point(aes(colour = "blue"), show.legend = FALSE) +
+   labs(title = "Relation between the population of Brazil \nand dengue searches on google",
+       y = "flu searches",
+       x = "population") +
+  annotate("text", x = 200000000, y = 15, size=4,
+           label = paste("pearson's r = ", cor_coefficient_mex))
+ 
+```

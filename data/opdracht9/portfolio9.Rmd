@@ -1,0 +1,93 @@
+---
+title: "Interactive Covid Data Analysis"
+author: "Kjettil Evers"
+date: "2023-05-22"
+output: html_document
+params:
+ country: "France"
+ year: 2020
+ month: 8
+---
+# Interactive Covid Data Analysis
+
+```{r libraries, message=FALSE}
+library(readr)
+library(tidyverse)
+library(lubridate)
+```
+
+
+```{r loading data, message=FALSE}
+# loading data from ECDC
+library(readr)
+covid_data <- read.csv("https://opendata.ecdc.europa.eu/covid19/nationalcasedeath_eueea_daily_ei/csv", na.strings = "", fileEncoding = "UTF-8-BOM")
+
+# check data
+head(covid_data)
+```
+
+
+```{r make dataset usable}
+library(tidyverse)
+library(lubridate)
+
+# change date from 22/06/20 to 22-06-20
+str_sub(covid_data$dateRep, start = 3 , end = 3) <- "-" 
+str_sub(covid_data$dateRep, start = 6 , end = 6) <- "-" 
+
+
+#convert character to date format (ymd) for ggplot
+covid_data$dateRep <- dmy(covid_data$dateRep)
+
+# set negative cases to NA
+covid_data$cases[covid_data$cases < 0] <- NA
+
+# set negative death to NA
+covid_data$deaths[covid_data$deaths < 0] <- NA
+
+#check changes
+head(covid_data)
+```
+# Interactive Analysis
+
+## Covid Cases per Date
+
+```{r ggplot covid cases}
+# Make ggplot based on date and covid cases using parameters
+## default parameters: country france, year 2020, month 8
+covid_data %>%
+  filter(countriesAndTerritories == params$country, year == params$year, month == params$month) %>%
+  ggplot(aes(x = dateRep, y = cases)) +
+  geom_line(aes(colour = "red"), show.legend = FALSE) +
+  labs(
+    title = paste("Covid cases per date in", params$country),
+    caption = "Covid data from European Centre for Disease Prevention and Control (ECDC)",
+    y = "Covid cases",
+    x = "Date"
+  ) +
+  theme_minimal()
+
+```
+
+## Covid Deaths per Date
+
+
+```{r covid deaths}
+# Make ggplot based on date and covid deaths using parameters
+## default parameters: country france, year 2020, month 8
+covid_data %>%
+  filter(countriesAndTerritories == params$country, year == params$year, month == params$month) %>%
+  ggplot(aes(x = dateRep, y = deaths)) +
+  geom_line(aes(colour = "red"), show.legend = FALSE) +
+  labs(
+    title = paste("Covid deaths per date in", params$country),
+    caption = "Covid data from European Centre for Disease Prevention and Control (ECDC)",
+    y = "Covid deaths",
+    x = "Date"
+  ) +
+  theme_minimal()
+
+```
+
+
+
