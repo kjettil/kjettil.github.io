@@ -138,7 +138,7 @@ dbWriteTable(con, "gap_data", gap_data, overwrite = TRUE)
 In DBeaver I inspected the data again to see if everthing was oke and all datasets where present. I added a screenshot of my DBeaver program, showing SQL code (upper right corner) and a preview of the flu data (bottom right corner)
 ```{r images, echo=FALSE, fig.height=7, out.width= '100%', fig.cap="Fig. 1: inspecting the contents of the tables with SQL in DBeaver" }
 
-img1 <-  rasterGrob(as.raster(readPNG("dbeaver.png")))
+img1 <-  rasterGrob(as.raster(readPNG("data/opdracht7/dbeaver.png")))
 
 grid.arrange(img1, top=textGrob("Data inspection using SQL in DBeaver", gp=gpar(fontsize=10,font=8)))
 ```
@@ -159,7 +159,7 @@ Because of the changes I made in the flu data and dangue data in beginning. I co
  
 ```{r img2, echo=FALSE, fig.height=7, out.width= '100%', fig.cap="Fig. 2: inspecting the contents of the tables with SQL in DBeaver" }
 
-img2 <-  rasterGrob(as.raster(readPNG("innerjoin.png")))
+img2 <-  rasterGrob(as.raster(readPNG("data/opdracht7/innerjoin.png")))
 
 grid.arrange(img2, top=textGrob("Data inspection using SQL in DBeaver", gp=gpar(fontsize=10,font=8)))
 ```
@@ -167,7 +167,7 @@ grid.arrange(img2, top=textGrob("Data inspection using SQL in DBeaver", gp=gpar(
 I loaded the joined data in with the following code:
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-results<- read_csv("data/results_202305231341.csv")
+results<- read_csv("data/opdracht7/data/results_202305231341.csv")
 
 ```
 

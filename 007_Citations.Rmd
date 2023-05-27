@@ -10,4 +10,3 @@ Het doel van deze studie was het onderzoeken van het effect van leucine in losse
 Aan ons de taak, om met behulp van R, een code te schrijven die in één oogopslag een duidelijk visueel beeld geeft van de bepaling. Waarin goed te zien is wat de effecten op de vrije aminozuren na toevoegen van leucine en andere factoren zijn. 
 
 
-# Referenties

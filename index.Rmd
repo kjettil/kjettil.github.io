@@ -4,15 +4,18 @@ author: "Kjettil Evers"
 date: "`r Sys.Date()`"
 site: "bookdown::bookdown_site"
 documentclass: book
-bibliography: ["book.bib", "packages.bib",'`r rbbt::bbt_write_bib("data/opdracht5/bibliography.json", overwrite = TRUE)`']
+bibliography: ["book.bib", "packages.bib", '`r rbbt::bbt_write_bib("data/opdracht5/bibliography.json", overwrite = TRUE)`']
 biblio-style: apalike
 link-citations: yes
 new_session: yes
 ---
 
-# Welkom in mijn portfolio
+# Welkom to my portfolio
+In this bookdown i created my portfolio where is showcase my skills in different subjects using Rmarkdown and more!
 
-in dit boek staan de portfolio opdrachten die ik van de Hogeschool Utrecht heb verkregen en verwerkt
+each chapter contains a exercise that shows what and how i executed the exercise. 
+
+
 
 
 ```{r include=FALSE}

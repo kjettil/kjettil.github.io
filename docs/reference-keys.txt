@@ -1,4 +1,6 @@
-welkom-in-mijn-portfolio
+fig:images
+fig:img2
+welkom-to-my-portfolio
 looking-ahead
 c.-elegans-plate-experiment
 open-peer-review
@@ -6,3 +8,10 @@ part-1
 extra-information-about-the-study
 part-2
 example-guerrilla-analytics-structure
+rmarkdown-parameterization
+preview-parameterized-rmarkdown-covid-cases-and-deaths
+testing-parameters
+results
+citations-using-zotero
+introductie
+relational-databases

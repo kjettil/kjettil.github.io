@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>8 relational databases | opdracht7</title>
+  <meta name="description" content="8 relational databases | opdracht7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="8 relational databases | opdracht7" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="8 relational databases | opdracht7" />
+  
+  
+  
+
+<meta name="author" content="Kjettil Evers" />
+
+
+<meta name="date" content="2023-05-15" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="citations-using-zotero.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">My portfolio using bookdown</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welkom to my portfolio</a></li>
+<li class="chapter" data-level="2" data-path="looking-ahead.html"><a href="looking-ahead.html"><i class="fa fa-check"></i><b>2</b> looking ahead</a></li>
+<li class="chapter" data-level="3" data-path="c.-elegans-plate-experiment.html"><a href="c.-elegans-plate-experiment.html"><i class="fa fa-check"></i><b>3</b> C. elegans plate experiment</a></li>
+<li class="chapter" data-level="4" data-path="open-peer-review.html"><a href="open-peer-review.html"><i class="fa fa-check"></i><b>4</b> Open Peer Review</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="open-peer-review.html"><a href="open-peer-review.html#part-1"><i class="fa fa-check"></i><b>4.1</b> part 1</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="open-peer-review.html"><a href="open-peer-review.html#extra-information-about-the-study"><i class="fa fa-check"></i><b>4.1.1</b> extra information about the study</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="open-peer-review.html"><a href="open-peer-review.html#part-2"><i class="fa fa-check"></i><b>4.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="example-guerrilla-analytics-structure.html"><a href="example-guerrilla-analytics-structure.html"><i class="fa fa-check"></i><b>5</b> example guerrilla analytics structure</a></li>
+<li class="chapter" data-level="6" data-path="rmarkdown-parameterization.html"><a href="rmarkdown-parameterization.html"><i class="fa fa-check"></i><b>6</b> RMarkdown parameterization</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="rmarkdown-parameterization.html"><a href="rmarkdown-parameterization.html#preview-parameterized-rmarkdown-covid-cases-and-deaths"><i class="fa fa-check"></i><b>6.1</b> preview parameterized Rmarkdown covid cases and deaths</a></li>
+<li class="chapter" data-level="6.2" data-path="rmarkdown-parameterization.html"><a href="rmarkdown-parameterization.html#testing-parameters"><i class="fa fa-check"></i><b>6.2</b> testing parameters</a></li>
+<li class="chapter" data-level="6.3" data-path="rmarkdown-parameterization.html"><a href="rmarkdown-parameterization.html#results"><i class="fa fa-check"></i><b>6.3</b> results</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="citations-using-zotero.html"><a href="citations-using-zotero.html"><i class="fa fa-check"></i><b>7</b> Citations using Zotero</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="citations-using-zotero.html"><a href="citations-using-zotero.html#introductie"><i class="fa fa-check"></i><b>7.1</b> Introductie</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="relational-databases.html"><a href="relational-databases.html"><i class="fa fa-check"></i><b>8</b> relational databases</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">opdracht7</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="relational-databases" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> relational databases<a href="relational-databases.html#relational-databases" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this exercise I will be using a relational database. this is a type of database that stores and provides access to data points that are related to one another. I will be using DBeaver to combine the Gapminder dataset with 2 other datasets containing flu/dengue google searches per country over the years.</p>
+<p>I used the following librarys for this exercise:</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="relational-databases.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(png)</span>
+<span id="cb64-2"><a href="relational-databases.html#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(grid)</span>
+<span id="cb64-3"><a href="relational-databases.html#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb64-4"><a href="relational-databases.html#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb64-5"><a href="relational-databases.html#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb64-6"><a href="relational-databases.html#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb64-7"><a href="relational-databases.html#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb64-8"><a href="relational-databases.html#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb64-9"><a href="relational-databases.html#cb64-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb64-10"><a href="relational-databases.html#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hablar)</span>
+<span id="cb64-11"><a href="relational-databases.html#cb64-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb64-12"><a href="relational-databases.html#cb64-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RPostgreSQL)</span></code></pre></div>
+<p>The first step is to load and inspect the Flu (./data/flu_data.csv), dengue (“./data/dengue_data.csv) and gapminder data ({dslabs} package) available <a href="https://github.com/DataScienceILC/tlsc-dsfb26v-20_workflows">here</a></p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="relational-databases.html#cb65-1" aria-hidden="true" tabindex="-1"></a>flu_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/DataScienceILC/tlsc-dsfb26v-20_workflows/main/data/flu_data.csv&quot;</span>, </span>
+<span id="cb65-2"><a href="relational-databases.html#cb65-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">skip =</span> <span class="dv">10</span>)</span>
+<span id="cb65-3"><a href="relational-databases.html#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flu_data)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 30
+##   Date       Argentina Australia Austria Belgium Bolivia Brazil Bulgaria Canada
+##   &lt;date&gt;         &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1 2002-12-29        NA        NA      NA      NA      NA    174       NA     NA
+## 2 2003-01-05        NA        NA      NA      NA      NA    162       NA     NA
+## 3 2003-01-12        NA        NA      NA      NA      NA    174       NA     NA
+## 4 2003-01-19        NA        NA      NA      NA      NA    162       NA     NA
+## 5 2003-01-26        NA        NA      NA      NA      NA    131       NA     NA
+## 6 2003-02-02       136        NA      NA      NA      NA    151       NA     NA
+## # ℹ 21 more variables: Chile &lt;dbl&gt;, France &lt;dbl&gt;, Germany &lt;dbl&gt;, Hungary &lt;dbl&gt;,
+## #   Japan &lt;dbl&gt;, Mexico &lt;dbl&gt;, Netherlands &lt;dbl&gt;, `New Zealand` &lt;dbl&gt;,
+## #   Norway &lt;dbl&gt;, Paraguay &lt;dbl&gt;, Peru &lt;dbl&gt;, Poland &lt;dbl&gt;, Romania &lt;dbl&gt;,
+## #   Russia &lt;dbl&gt;, `South Africa` &lt;dbl&gt;, Spain &lt;dbl&gt;, Sweden &lt;dbl&gt;,
+## #   Switzerland &lt;dbl&gt;, Ukraine &lt;dbl&gt;, `United States` &lt;dbl&gt;, Uruguay &lt;dbl&gt;</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="relational-databases.html#cb67-1" aria-hidden="true" tabindex="-1"></a>dengue_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/DataScienceILC/tlsc-dsfb26v-20_workflows/main/data/dengue_data.csv&quot;</span>, </span>
+<span id="cb67-2"><a href="relational-databases.html#cb67-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">skip =</span> <span class="dv">10</span>)</span>
+<span id="cb67-3"><a href="relational-databases.html#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dengue_data)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 11
+##   Date       Argentina Bolivia Brazil India Indonesia Mexico Philippines
+##   &lt;date&gt;         &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
+## 1 2002-12-29        NA   0.101  0.073 0.062     0.101 NA              NA
+## 2 2003-01-05        NA   0.143  0.098 0.047     0.039 NA              NA
+## 3 2003-01-12        NA   0.176  0.119 0.051     0.059  0.071          NA
+## 4 2003-01-19        NA   0.173  0.17  0.032     0.039  0.052          NA
+## 5 2003-01-26        NA   0.146  0.138 0.04      0.112  0.048          NA
+## 6 2003-02-02        NA   0.16   0.202 0.038     0.049  0.041          NA
+## # ℹ 3 more variables: Singapore &lt;dbl&gt;, Thailand &lt;dbl&gt;, Venezuela &lt;dbl&gt;</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="relational-databases.html#cb69-1" aria-hidden="true" tabindex="-1"></a>gap_data<span class="ot">&lt;-</span> gapminder</span>
+<span id="cb69-2"><a href="relational-databases.html#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gap_data)</span></code></pre></div>
+<pre><code>##               country year infant_mortality life_expectancy fertility
+## 1             Albania 1960           115.40           62.87      6.19
+## 2             Algeria 1960           148.20           47.50      7.65
+## 3              Angola 1960           208.00           35.98      7.32
+## 4 Antigua and Barbuda 1960               NA           62.97      4.43
+## 5           Argentina 1960            59.87           65.39      3.11
+## 6             Armenia 1960               NA           66.86      4.55
+##   population          gdp continent          region
+## 1    1636054           NA    Europe Southern Europe
+## 2   11124892  13828152297    Africa Northern Africa
+## 3    5270844           NA    Africa   Middle Africa
+## 4      54681           NA  Americas       Caribbean
+## 5   20619075 108322326649  Americas   South America
+## 6    1867396           NA      Asia    Western Asia</code></pre>
+<p>after inspecting the data I made the flu and dengue data tidy and alterd the data so it will be easier to merge with the gapminder data late on</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="relational-databases.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co">#make flu_data tidy</span></span>
+<span id="cb71-2"><a href="relational-databases.html#cb71-2" aria-hidden="true" tabindex="-1"></a>flu_data_tidy<span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(<span class="at">data =</span> flu_data, <span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(<span class="st">&#39;Date&#39;</span>),  </span>
+<span id="cb71-3"><a href="relational-databases.html#cb71-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">names_to =</span> <span class="st">&quot;country&quot;</span>,  <span class="at">values_to =</span> <span class="st">&quot;flu_searches&quot;</span>)</span>
+<span id="cb71-4"><a href="relational-databases.html#cb71-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-5"><a href="relational-databases.html#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove month and day from Date</span></span>
+<span id="cb71-6"><a href="relational-databases.html#cb71-6" aria-hidden="true" tabindex="-1"></a>flu_data_tidy<span class="sc">$</span>Date<span class="ot">&lt;-</span> <span class="fu">str_sub</span>(flu_data_tidy<span class="sc">$</span>Date, <span class="at">start =</span><span class="dv">1</span>, <span class="at">end =</span> <span class="dv">4</span>)</span>
+<span id="cb71-7"><a href="relational-databases.html#cb71-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-8"><a href="relational-databases.html#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="co">#rename date to year</span></span>
+<span id="cb71-9"><a href="relational-databases.html#cb71-9" aria-hidden="true" tabindex="-1"></a>flu_data_tidy<span class="ot">&lt;-</span> <span class="fu">rename</span>(flu_data_tidy, <span class="at">year =</span> Date)</span>
+<span id="cb71-10"><a href="relational-databases.html#cb71-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-11"><a href="relational-databases.html#cb71-11" aria-hidden="true" tabindex="-1"></a><span class="co"># group by date and country to get all searches of that year in one row</span></span>
+<span id="cb71-12"><a href="relational-databases.html#cb71-12" aria-hidden="true" tabindex="-1"></a>flu_data_tidy<span class="ot">&lt;-</span> flu_data_tidy <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year, country) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">flu_searches =</span> <span class="fu">sum</span>(flu_searches))</span>
+<span id="cb71-13"><a href="relational-databases.html#cb71-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-14"><a href="relational-databases.html#cb71-14" aria-hidden="true" tabindex="-1"></a><span class="co">#change NA to 0 searches</span></span>
+<span id="cb71-15"><a href="relational-databases.html#cb71-15" aria-hidden="true" tabindex="-1"></a>flu_data_tidy[<span class="fu">is.na</span>(flu_data_tidy)]<span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb71-16"><a href="relational-databases.html#cb71-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-17"><a href="relational-databases.html#cb71-17" aria-hidden="true" tabindex="-1"></a><span class="co"># now it is good to join with gapminder </span></span>
+<span id="cb71-18"><a href="relational-databases.html#cb71-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flu_data_tidy)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+## # Groups:   year [1]
+##   year  country   flu_searches
+##   &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1 2002  Argentina            0
+## 2 2002  Australia            0
+## 3 2002  Austria              0
+## 4 2002  Belgium              0
+## 5 2002  Bolivia              0
+## 6 2002  Brazil             174</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="relational-databases.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co">#make dengue_data tidy</span></span>
+<span id="cb73-2"><a href="relational-databases.html#cb73-2" aria-hidden="true" tabindex="-1"></a>dengue_data_tidy<span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(<span class="at">data =</span> dengue_data, <span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(<span class="st">&#39;Date&#39;</span>),  </span>
+<span id="cb73-3"><a href="relational-databases.html#cb73-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">names_to =</span> <span class="st">&quot;country&quot;</span>,  <span class="at">values_to =</span> <span class="st">&quot;dengue_searches&quot;</span>)</span>
+<span id="cb73-4"><a href="relational-databases.html#cb73-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-5"><a href="relational-databases.html#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="co"># remove month and day from Date</span></span>
+<span id="cb73-6"><a href="relational-databases.html#cb73-6" aria-hidden="true" tabindex="-1"></a>dengue_data_tidy<span class="sc">$</span>Date<span class="ot">&lt;-</span> <span class="fu">str_sub</span>(dengue_data_tidy<span class="sc">$</span>Date, <span class="at">start =</span><span class="dv">1</span>, <span class="at">end =</span> <span class="dv">4</span>)</span>
+<span id="cb73-7"><a href="relational-databases.html#cb73-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-8"><a href="relational-databases.html#cb73-8" aria-hidden="true" tabindex="-1"></a><span class="co">#rename date to year</span></span>
+<span id="cb73-9"><a href="relational-databases.html#cb73-9" aria-hidden="true" tabindex="-1"></a>dengue_data_tidy<span class="ot">&lt;-</span> <span class="fu">rename</span>(dengue_data_tidy, <span class="at">year =</span> Date)</span>
+<span id="cb73-10"><a href="relational-databases.html#cb73-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-11"><a href="relational-databases.html#cb73-11" aria-hidden="true" tabindex="-1"></a><span class="co"># group by date and country to get all searches of that year in one row</span></span>
+<span id="cb73-12"><a href="relational-databases.html#cb73-12" aria-hidden="true" tabindex="-1"></a>dengue_data_tidy<span class="ot">&lt;-</span> dengue_data_tidy <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year, country) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">dengue_searches =</span> <span class="fu">sum</span>(dengue_searches))</span>
+<span id="cb73-13"><a href="relational-databases.html#cb73-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-14"><a href="relational-databases.html#cb73-14" aria-hidden="true" tabindex="-1"></a><span class="co">#change NA to 0 searches</span></span>
+<span id="cb73-15"><a href="relational-databases.html#cb73-15" aria-hidden="true" tabindex="-1"></a>dengue_data_tidy[<span class="fu">is.na</span>(dengue_data_tidy)]<span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb73-16"><a href="relational-databases.html#cb73-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-17"><a href="relational-databases.html#cb73-17" aria-hidden="true" tabindex="-1"></a><span class="co"># now it can be joined with gapminder and flu_data</span></span>
+<span id="cb73-18"><a href="relational-databases.html#cb73-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dengue_data_tidy)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+## # Groups:   year [1]
+##   year  country   dengue_searches
+##   &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt;
+## 1 2002  Argentina           0    
+## 2 2002  Bolivia             0.101
+## 3 2002  Brazil              0.073
+## 4 2002  India               0.062
+## 5 2002  Indonesia           0.101
+## 6 2002  Mexico              0</code></pre>
+<p>After making both the flu data and dengue data tidy, I fixed the variables in terms of data type, class and values.
+I changed these datasets so that the data type, class and values are the same as the Gapminder data to avoid problems in merging later on</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="relational-databases.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co">#fixing variables so they match with each other and coincide in terms of data type, class and values</span></span>
+<span id="cb75-2"><a href="relational-databases.html#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="co">#flu_data</span></span>
+<span id="cb75-3"><a href="relational-databases.html#cb75-3" aria-hidden="true" tabindex="-1"></a>flu_data_tidy<span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(flu_data_tidy) <span class="sc">%&gt;%</span> <span class="fu">convert</span>(<span class="fu">int</span>(year))</span>
+<span id="cb75-4"><a href="relational-databases.html#cb75-4" aria-hidden="true" tabindex="-1"></a>flu_data_tidy<span class="sc">$</span>country<span class="ot">&lt;-</span> <span class="fu">as.factor</span>(flu_data_tidy<span class="sc">$</span>country) </span>
+<span id="cb75-5"><a href="relational-databases.html#cb75-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flu_data_tidy)</span></code></pre></div>
+<pre><code>##   year   country flu_searches
+## 1 2002 Argentina            0
+## 2 2002 Australia            0
+## 3 2002   Austria            0
+## 4 2002   Belgium            0
+## 5 2002   Bolivia            0
+## 6 2002    Brazil          174</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="relational-databases.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dengue_data</span></span>
+<span id="cb77-2"><a href="relational-databases.html#cb77-2" aria-hidden="true" tabindex="-1"></a>dengue_data_tidy <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(dengue_data_tidy) <span class="sc">%&gt;%</span> <span class="fu">convert</span>(<span class="fu">int</span>(year))</span>
+<span id="cb77-3"><a href="relational-databases.html#cb77-3" aria-hidden="true" tabindex="-1"></a>dengue_data_tidy<span class="sc">$</span>country<span class="ot">&lt;-</span> <span class="fu">as.factor</span>(dengue_data_tidy<span class="sc">$</span>country) </span>
+<span id="cb77-4"><a href="relational-databases.html#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dengue_data_tidy)</span></code></pre></div>
+<pre><code>##   year   country dengue_searches
+## 1 2002 Argentina           0.000
+## 2 2002   Bolivia           0.101
+## 3 2002    Brazil           0.073
+## 4 2002     India           0.062
+## 5 2002 Indonesia           0.101
+## 6 2002    Mexico           0.000</code></pre>
+<p>After I finised fixing al the datasets I stored as both csv and rds with the following code</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="relational-databases.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co">#store data as csv and rds</span></span>
+<span id="cb79-2"><a href="relational-databases.html#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="co">#flu data</span></span>
+<span id="cb79-3"><a href="relational-databases.html#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(flu_data_tidy, <span class="st">&quot;data</span><span class="sc">\\</span><span class="st">flu_data_tidy.csv&quot;</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb79-4"><a href="relational-databases.html#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(flu_data_tidy, <span class="at">file =</span> <span class="st">&quot;data/flu_data_tidy.rds&quot;</span>)</span>
+<span id="cb79-5"><a href="relational-databases.html#cb79-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-6"><a href="relational-databases.html#cb79-6" aria-hidden="true" tabindex="-1"></a><span class="co">#dengue data</span></span>
+<span id="cb79-7"><a href="relational-databases.html#cb79-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(dengue_data_tidy, <span class="st">&quot;data</span><span class="sc">\\</span><span class="st">dengue_data_tidy.csv&quot;</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb79-8"><a href="relational-databases.html#cb79-8" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(dengue_data_tidy, <span class="at">file =</span> <span class="st">&quot;data/dengue_data_tidy.rds&quot;</span>)</span>
+<span id="cb79-9"><a href="relational-databases.html#cb79-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-10"><a href="relational-databases.html#cb79-10" aria-hidden="true" tabindex="-1"></a><span class="co">#gapminder data</span></span>
+<span id="cb79-11"><a href="relational-databases.html#cb79-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(gap_data, <span class="st">&quot;data</span><span class="sc">\\</span><span class="st">gap_data.csv&quot;</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb79-12"><a href="relational-databases.html#cb79-12" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(gap_data, <span class="at">file =</span> <span class="st">&quot;data/gap_data.rds&quot;</span>)</span></code></pre></div>
+<p>The next step was to setup a database in DBeaver. I called the database workflowsdb.</p>
+<p>Using RPostgreSQL, I inserted the datasets from earlier in the workflowsdb dataset</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="relational-databases.html#cb80-1" aria-hidden="true" tabindex="-1"></a>con</span>
+<span id="cb80-2"><a href="relational-databases.html#cb80-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-3"><a href="relational-databases.html#cb80-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="st">&quot;flu_data_tidy&quot;</span>, flu_data_tidy, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb80-4"><a href="relational-databases.html#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="st">&quot;dengue_data_tidy&quot;</span>, dengue_data_tidy, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb80-5"><a href="relational-databases.html#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="st">&quot;gap_data&quot;</span>, gap_data, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+In DBeaver I inspected the data again to see if everthing was oke and all datasets where present. I added a screenshot of my DBeaver program, showing SQL code (upper right corner) and a preview of the flu data (bottom right corner)
+<div class="figure"><span style="display:block;" id="fig:images"></span>
+<img src="bookdown_portfolio_files/figure-html/images-1.png" alt="Fig. 1: inspecting the contents of the tables with SQL in DBeaver" width="100%" />
+<p class="caption">
+Figure 8.1: Fig. 1: inspecting the contents of the tables with SQL in DBeaver
+</p>
+</div>
+<p>I also inspected the data using R with the Head() function as seen below</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="relational-databases.html#cb81-1" aria-hidden="true" tabindex="-1"></a>flu_data_tidy <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>##   year   country flu_searches
+## 1 2002 Argentina            0
+## 2 2002 Australia            0
+## 3 2002   Austria            0
+## 4 2002   Belgium            0
+## 5 2002   Bolivia            0
+## 6 2002    Brazil          174</code></pre>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="relational-databases.html#cb83-1" aria-hidden="true" tabindex="-1"></a>dengue_data_tidy <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>##   year   country dengue_searches
+## 1 2002 Argentina           0.000
+## 2 2002   Bolivia           0.101
+## 3 2002    Brazil           0.073
+## 4 2002     India           0.062
+## 5 2002 Indonesia           0.101
+## 6 2002    Mexico           0.000</code></pre>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="relational-databases.html#cb85-1" aria-hidden="true" tabindex="-1"></a>gap_data <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>##               country year infant_mortality life_expectancy fertility
+## 1             Albania 1960           115.40           62.87      6.19
+## 2             Algeria 1960           148.20           47.50      7.65
+## 3              Angola 1960           208.00           35.98      7.32
+## 4 Antigua and Barbuda 1960               NA           62.97      4.43
+## 5           Argentina 1960            59.87           65.39      3.11
+## 6             Armenia 1960               NA           66.86      4.55
+##   population          gdp continent          region
+## 1    1636054           NA    Europe Southern Europe
+## 2   11124892  13828152297    Africa Northern Africa
+## 3    5270844           NA    Africa   Middle Africa
+## 4      54681           NA  Americas       Caribbean
+## 5   20619075 108322326649  Americas   South America
+## 6    1867396           NA      Asia    Western Asia</code></pre>
+<p>Because of the changes I made in the flu data and dangue data in beginning. I could easily merge the data of both flu and dengue to the gapminder data. I used inner join so that if there is not a match between the country,year and
+flu/dengue searches it is removed from the table. I called the merged dataset “results”
+This is seen in the image below</p>
+<div class="figure"><span style="display:block;" id="fig:img2"></span>
+<img src="bookdown_portfolio_files/figure-html/img2-1.png" alt="Fig. 2: inspecting the contents of the tables with SQL in DBeaver" width="100%" />
+<p class="caption">
+Figure 8.2: Fig. 2: inspecting the contents of the tables with SQL in DBeaver
+</p>
+</div>
+<p>I loaded the joined data in with the following code:</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="relational-databases.html#cb87-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">dbReadTable</span>(con, <span class="st">&quot;results&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="relational-databases.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(results)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 11
+##   country    year infant_mortality life_expectancy fertility population   gdp
+##   &lt;chr&gt;     &lt;dbl&gt;            &lt;dbl&gt;           &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;
+## 1 Argentina  2015             11.1            76.5      2.15   43416755    NA
+## 2 Bolivia    2015             30.6            73.2      3.14   10724705    NA
+## 3 Brazil     2015             14.6            74.4      1.78  207847528    NA
+## 4 Mexico     2015             11.3            75.9      2.13  127017224    NA
+## 5 Argentina  2014             11.5            76.3      2.16   42980026    NA
+## 6 Bolivia    2014             31.7            72.9      3.18   10561887    NA
+## # ℹ 4 more variables: continent &lt;chr&gt;, region &lt;chr&gt;, flu_searches &lt;dbl&gt;,
+## #   dengue_searches &lt;dbl&gt;</code></pre>
+<p>After reviewing the results data i used summary() to show descriptive statistics. It displays minimum, 1st quartile, median, mean, 3rd quartile, and maximum values for numeric variables, and counts for factors.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="relational-databases.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics</span></span>
+<span id="cb90-2"><a href="relational-databases.html#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(results)</span></code></pre></div>
+<pre><code>##    country               year      infant_mortality life_expectancy
+##  Length:56          Min.   :2002   Min.   :11.10    Min.   :68.70  
+##  Class :character   1st Qu.:2005   1st Qu.:14.25    1st Qu.:72.40  
+##  Mode  :character   Median :2008   Median :16.10    Median :74.35  
+##                     Mean   :2008   Mean   :21.64    Mean   :73.83  
+##                     3rd Qu.:2012   3rd Qu.:25.88    3rd Qu.:75.40  
+##                     Max.   :2015   Max.   :53.70    Max.   :76.50  
+##                                                                    
+##    fertility       population             gdp             continent        
+##  Min.   :1.780   Min.   :  8653343   Min.   :8.752e+09   Length:56         
+##  1st Qu.:2.158   1st Qu.: 31098258   1st Qu.:1.848e+11   Class :character  
+##  Median :2.265   Median : 74497526   Median :5.291e+11   Mode  :character  
+##  Mean   :2.505   Mean   : 90395962   Mean   :4.538e+11                     
+##  3rd Qu.:2.712   3rd Qu.:140524316   3rd Qu.:6.943e+11                     
+##  Max.   :3.980   Max.   :207847528   Max.   :9.446e+11                     
+##                                      NA&#39;s   :16                            
+##     region           flu_searches   dengue_searches 
+##  Length:56          Min.   :    0   Min.   : 0.000  
+##  Class :character   1st Qu.: 7041   1st Qu.: 1.464  
+##  Mode  :character   Median :10151   Median : 3.889  
+##                     Mean   :19459   Mean   : 4.644  
+##                     3rd Qu.:19816   3rd Qu.: 7.713  
+##                     Max.   :70979   Max.   :16.739  
+## </code></pre>
+<p>At last I made various ggplots to visualize data from the joined dataset
+The first two ggplot are the basic ggplot showing the flu and dengue searches over the year</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="relational-databases.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb92-2"><a href="relational-databases.html#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggbreak) </span>
+<span id="cb92-3"><a href="relational-databases.html#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
+<span id="cb92-4"><a href="relational-databases.html#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb92-5"><a href="relational-databases.html#cb92-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-6"><a href="relational-databases.html#cb92-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-7"><a href="relational-databases.html#cb92-7" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> flu_searches)) <span class="sc">+</span> </span>
+<span id="cb92-8"><a href="relational-databases.html#cb92-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">colour =</span> country))<span class="sc">+</span></span>
+<span id="cb92-9"><a href="relational-databases.html#cb92-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Flu searches over the years per country&quot;</span>,</span>
+<span id="cb92-10"><a href="relational-databases.html#cb92-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;flu searches&quot;</span>,</span>
+<span id="cb92-11"><a href="relational-databases.html#cb92-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;year&quot;</span>) </span></code></pre></div>
+<p><img src="bookdown_portfolio_files/figure-html/basic%20ggplots,%20-1.png" width="672" /></p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="relational-databases.html#cb93-1" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> dengue_searches)) <span class="sc">+</span> </span>
+<span id="cb93-2"><a href="relational-databases.html#cb93-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">colour =</span> country)) <span class="sc">+</span></span>
+<span id="cb93-3"><a href="relational-databases.html#cb93-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;dengue searches over the years per country&quot;</span>,</span>
+<span id="cb93-4"><a href="relational-databases.html#cb93-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;dengue searches&quot;</span>,</span>
+<span id="cb93-5"><a href="relational-databases.html#cb93-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;year&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown_portfolio_files/figure-html/basic%20ggplots,%20-2.png" width="672" />
+Next I joined the ggplots to become one with the following code:</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="relational-databases.html#cb94-1" aria-hidden="true" tabindex="-1"></a>results_tidy<span class="ot">&lt;-</span> results <span class="sc">%&gt;%</span> </span>
+<span id="cb94-2"><a href="relational-databases.html#cb94-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb94-3"><a href="relational-databases.html#cb94-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">flu =</span> flu_searches,</span>
+<span id="cb94-4"><a href="relational-databases.html#cb94-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">dengue =</span> dengue_searches</span>
+<span id="cb94-5"><a href="relational-databases.html#cb94-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb94-6"><a href="relational-databases.html#cb94-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-7"><a href="relational-databases.html#cb94-7" aria-hidden="true" tabindex="-1"></a>results_tidy<span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(<span class="at">data =</span> results_tidy, <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&#39;flu&#39;</span>, <span class="st">&#39;dengue&#39;</span>),  </span>
+<span id="cb94-8"><a href="relational-databases.html#cb94-8" aria-hidden="true" tabindex="-1"></a>                             <span class="at">names_to =</span> <span class="st">&quot;disease&quot;</span>,  <span class="at">values_to =</span> <span class="st">&quot;searches&quot;</span>)</span>
+<span id="cb94-9"><a href="relational-databases.html#cb94-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-10"><a href="relational-databases.html#cb94-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-11"><a href="relational-databases.html#cb94-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-12"><a href="relational-databases.html#cb94-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-13"><a href="relational-databases.html#cb94-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-14"><a href="relational-databases.html#cb94-14" aria-hidden="true" tabindex="-1"></a>results_tidy</span></code></pre></div>
+<pre><code>## # A tibble: 112 × 11
+##    country    year infant_mortality life_expectancy fertility population   gdp
+##    &lt;chr&gt;     &lt;dbl&gt;            &lt;dbl&gt;           &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;
+##  1 Argentina  2015             11.1            76.5      2.15   43416755    NA
+##  2 Argentina  2015             11.1            76.5      2.15   43416755    NA
+##  3 Bolivia    2015             30.6            73.2      3.14   10724705    NA
+##  4 Bolivia    2015             30.6            73.2      3.14   10724705    NA
+##  5 Brazil     2015             14.6            74.4      1.78  207847528    NA
+##  6 Brazil     2015             14.6            74.4      1.78  207847528    NA
+##  7 Mexico     2015             11.3            75.9      2.13  127017224    NA
+##  8 Mexico     2015             11.3            75.9      2.13  127017224    NA
+##  9 Argentina  2014             11.5            76.3      2.16   42980026    NA
+## 10 Argentina  2014             11.5            76.3      2.16   42980026    NA
+## # ℹ 102 more rows
+## # ℹ 4 more variables: continent &lt;chr&gt;, region &lt;chr&gt;, disease &lt;chr&gt;,
+## #   searches &lt;dbl&gt;</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="relational-databases.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>results_tidy, <span class="fu">aes</span>(<span class="at">x=</span>year, <span class="at">y=</span><span class="fu">log10</span>(searches), <span class="at">color=</span>country, <span class="at">shape =</span> disease)) <span class="sc">+</span></span>
+<span id="cb96-2"><a href="relational-databases.html#cb96-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb96-3"><a href="relational-databases.html#cb96-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb96-4"><a href="relational-databases.html#cb96-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fl">0.0</span>, <span class="dv">5</span>)</span></code></pre></div>
+<p><img src="bookdown_portfolio_files/figure-html/combined%20ggplot-1.png" width="672" /></p>
+<p>I also made a ggplot showing the relation between the population of mexico and flu searches on google</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="relational-databases.html#cb97-1" aria-hidden="true" tabindex="-1"></a>mexico <span class="ot">&lt;-</span>results <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country  <span class="sc">==</span> <span class="st">&quot;Mexico&quot;</span>) </span>
+<span id="cb97-2"><a href="relational-databases.html#cb97-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-3"><a href="relational-databases.html#cb97-3" aria-hidden="true" tabindex="-1"></a>cor_coefficient_mex<span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">cor.test</span>(mexico<span class="sc">$</span>population, mexico<span class="sc">$</span>flu_searches, <span class="at">method=</span><span class="fu">c</span>(<span class="st">&quot;pearson&quot;</span>))<span class="sc">$</span>estimate,<span class="dv">1</span>)</span>
+<span id="cb97-4"><a href="relational-databases.html#cb97-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-5"><a href="relational-databases.html#cb97-5" aria-hidden="true" tabindex="-1"></a> mexico <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> population, <span class="at">y =</span> flu_searches)) <span class="sc">+</span> </span>
+<span id="cb97-6"><a href="relational-databases.html#cb97-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> <span class="st">&quot;red&quot;</span>), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb97-7"><a href="relational-databases.html#cb97-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Relation between the population of mexico </span><span class="sc">\n</span><span class="st">and flu searches on google&quot;</span>,</span>
+<span id="cb97-8"><a href="relational-databases.html#cb97-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;flu searches&quot;</span>,</span>
+<span id="cb97-9"><a href="relational-databases.html#cb97-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;population&quot;</span>) <span class="sc">+</span></span>
+<span id="cb97-10"><a href="relational-databases.html#cb97-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="dv">108000000</span>, <span class="at">y =</span> <span class="dv">65000</span>, <span class="at">size=</span><span class="dv">4</span>,</span>
+<span id="cb97-11"><a href="relational-databases.html#cb97-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">&quot;pearson&#39;s r = &quot;</span>, cor_coefficient_mex))</span></code></pre></div>
+<p><img src="bookdown_portfolio_files/figure-html/plot%20mex%20population-1.png" width="672" /></p>
+<p>and i made this ggplot showing Relation between the population of Brazil and dengue searches on google</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="relational-databases.html#cb98-1" aria-hidden="true" tabindex="-1"></a>Brazil <span class="ot">&lt;-</span>results <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country  <span class="sc">==</span> <span class="st">&quot;Brazil&quot;</span>) </span>
+<span id="cb98-2"><a href="relational-databases.html#cb98-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-3"><a href="relational-databases.html#cb98-3" aria-hidden="true" tabindex="-1"></a>cor_coefficient_brazil<span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">cor.test</span>(Brazil<span class="sc">$</span>population, Brazil<span class="sc">$</span>dengue_searches, <span class="at">method=</span><span class="fu">c</span>(<span class="st">&quot;pearson&quot;</span>))<span class="sc">$</span>estimate,<span class="dv">1</span>)</span>
+<span id="cb98-4"><a href="relational-databases.html#cb98-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-5"><a href="relational-databases.html#cb98-5" aria-hidden="true" tabindex="-1"></a> Brazil <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> population, <span class="at">y =</span> dengue_searches)) <span class="sc">+</span> </span>
+<span id="cb98-6"><a href="relational-databases.html#cb98-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> <span class="st">&quot;blue&quot;</span>), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb98-7"><a href="relational-databases.html#cb98-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Relation between the population of Brazil </span><span class="sc">\n</span><span class="st">and dengue searches on google&quot;</span>,</span>
+<span id="cb98-8"><a href="relational-databases.html#cb98-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;flu searches&quot;</span>,</span>
+<span id="cb98-9"><a href="relational-databases.html#cb98-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;population&quot;</span>) <span class="sc">+</span></span>
+<span id="cb98-10"><a href="relational-databases.html#cb98-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="dv">200000000</span>, <span class="at">y =</span> <span class="dv">15</span>, <span class="at">size=</span><span class="dv">4</span>,</span>
+<span id="cb98-11"><a href="relational-databases.html#cb98-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">&quot;pearson&#39;s r = &quot;</span>, cor_coefficient_mex))</span></code></pre></div>
+<p><img src="bookdown_portfolio_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div class="csl-entry">
+Boirie, Yves, and Christelle Guillet. 2018. <span>“Fast Digestive Proteins and Sarcopenia of Aging.”</span> <em>Current Opinion in Clinical Nutrition &amp; Metabolic Care</em> 21 (1): 37–41. <a href="https://doi.org/10.1097/MCO.0000000000000427">https://doi.org/10.1097/MCO.0000000000000427</a>.
+</div>
+<div class="csl-entry">
+Crozier, Stephen J., Scot R. Kimball, Sans W. Emmert, Joshua C. Anthony, and Leonard S. Jefferson. 2005. <span>“Oral leucine administration stimulates protein synthesis in rat skeletal muscle.”</span> <em>The Journal of Nutrition</em> 135 (3): 376–82. <a href="https://doi.org/10.1093/jn/135.3.376">https://doi.org/10.1093/jn/135.3.376</a>.
+</div>
+<div class="csl-entry">
+Dardevet, D., C. Sornet, M. Balage, and J. Grizard. 2000. <span>“Stimulation of in vitro rat muscle protein synthesis by leucine decreases with age.”</span> <em>The Journal of Nutrition</em> 130 (11): 2630–35. <a href="https://doi.org/10.1093/jn/130.11.2630">https://doi.org/10.1093/jn/130.11.2630</a>.
+</div>
+<div class="csl-entry">
+Dijk, Francina J., Miriam Van Dijk, Stéphane Walrand, Luc J.C. Van Loon, Klaske Van Norren, and Yvette C. Luiking. 2018. <span>“Differential Effects of Leucine and Leucine-Enriched Whey Protein on Skeletal Muscle Protein Synthesis in Aged Mice.”</span> <em>Clinical Nutrition ESPEN</em> 24 (April): 127–33. <a href="https://doi.org/10.1016/j.clnesp.2017.12.013">https://doi.org/10.1016/j.clnesp.2017.12.013</a>.
+</div>
+<div class="csl-entry">
+Van Dijk, Miriam, Francina J. Dijk, Annelies Bunschoten, Dorien A.M. Van Dartel, Klaske Van Norren, Stephane Walrand, Marion Jourdan, Sjors Verlaan, and Yvette Luiking. 2016. <span>“Improved Muscle Function and Quality After Diet Intervention with Leucine-Enriched Whey and Antioxidants in Antioxidant Deficient Aged Mice.”</span> <em>Oncotarget</em> 7 (14): 17338–55. <a href="https://doi.org/10.18632/oncotarget.7800">https://doi.org/10.18632/oncotarget.7800</a>.
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="citations-using-zotero.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/008_relational_databases.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bookdown_portfolio.pdf", "bookdown_portfolio.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

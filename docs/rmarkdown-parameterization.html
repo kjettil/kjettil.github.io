@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>5 example guerrilla analytics structure | opdracht7</title>
-  <meta name="description" content="5 example guerrilla analytics structure | opdracht7" />
+  <title>6 RMarkdown parameterization | opdracht7</title>
+  <meta name="description" content="6 RMarkdown parameterization | opdracht7" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="5 example guerrilla analytics structure | opdracht7" />
+  <meta property="og:title" content="6 RMarkdown parameterization | opdracht7" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="5 example guerrilla analytics structure | opdracht7" />
+  <meta name="twitter:title" content="6 RMarkdown parameterization | opdracht7" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="open-peer-review.html"/>
-<link rel="next" href="rmarkdown-parameterization.html"/>
+<link rel="prev" href="example-guerrilla-analytics-structure.html"/>
+<link rel="next" href="citations-using-zotero.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -205,93 +205,70 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="example-guerrilla-analytics-structure" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">5</span> example guerrilla analytics structure<a href="example-guerrilla-analytics-structure.html#example-guerrilla-analytics-structure" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>In this exercise we will show my folder structure using the guerrilla analytics structure</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="example-guerrilla-analytics-structure.html#cb58-1" aria-hidden="true" tabindex="-1"></a>fs<span class="sc">::</span><span class="fu">dir_tree</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;opdracht2&quot;</span>))</span></code></pre></div>
-<pre><code>## C:/Users/kjett/OneDrive - Stichting Hogeschool Utrecht/Documenten/dsfb2/kjettil.github.io/data/opdracht2
-## ├── metagenomics
-## │   ├── data
-## │   │   └── README.txt
-## │   ├── README.txt
-## │   ├── report
-## │   │   ├── metagenomics.html
-## │   │   └── metagenomics.Rmd
-## │   ├── results
-## │   │   ├── bracken
-## │   │   │   ├── mock1.bracken
-## │   │   │   └── mock2.bracken
-## │   │   ├── fastqc
-## │   │   │   ├── HU1_MOCK1_L001_R1_001_fastqc.html
-## │   │   │   ├── HU1_MOCK1_L001_R1_001_fastqc.zip
-## │   │   │   ├── HU1_MOCK1_L001_R2_001_fastqc.html
-## │   │   │   ├── HU1_MOCK1_L001_R2_001_fastqc.zip
-## │   │   │   ├── HU2_MOCK2_L001_R1_001_fastqc.html
-## │   │   │   ├── HU2_MOCK2_L001_R1_001_fastqc.zip
-## │   │   │   ├── HU2_MOCK2_L001_R2_001_fastqc.html
-## │   │   │   └── HU2_MOCK2_L001_R2_001_fastqc.zip
-## │   │   ├── images
-## │   │   │   ├── fastqc_mock1_R1_per_base_quality.png
-## │   │   │   ├── fastqc_mock1_R2_per_base_quality.png
-## │   │   │   ├── fastqc_mock2_R1_per_base_quality.png
-## │   │   │   ├── fastqc_mock2_R2_per_base_quality.png
-## │   │   │   └── README.txt
-## │   │   ├── kraken2
-## │   │   │   ├── mock1
-## │   │   │   │   ├── mock1.report
-## │   │   │   │   ├── mock1_bracken_species.biom
-## │   │   │   │   └── mock1_bracken_species.report
-## │   │   │   └── mock2
-## │   │   │       ├── mock2.report
-## │   │   │       ├── mock2_bracken_species.biom
-## │   │   │       └── mock2_bracken_species.report
-## │   │   └── README
-## │   └── setup_meta_env.yml
-## └── rna_sequencing
-##     ├── rnaseq_formatieve_opdracht
-##     │   ├── data
-##     │   │   └── README.txt
-##     │   ├── README.txt
-##     │   ├── report
-##     │   │   ├── formatieve_opdracht1.html
-##     │   │   └── formatieve_opdracht1.Rmd
-##     │   └── results
-##     │       ├── bamfiles
-##     │       └── counts
-##     └── rnaseq_toetsopdracht
-##         ├── data
-##         │   ├── metadata
-##         │   │   ├── onecut_sampledata_OC3.csv
-##         │   │   └── onecut_sampledata_OC3.md5
-##         │   ├── README.txt
-##         │   ├── SRR7866699_1.fastq.gz
-##         │   ├── SRR7866699_2.fastq.gz
-##         │   ├── SRR7866705_1.fastq.gz
-##         │   └── SRR7866705_2.fastq.gz
-##         ├── README.txt
-##         ├── report
-##         │   ├── toetsopdracht.html
-##         │   └── toetsopdracht.Rmd
-##         └── results
-##             ├── counts
-##             ├── images
-##             │   ├── fastqc_SRR7866699_1_per_base_quality.png
-##             │   ├── fastqc_SRR7866699_1_per_sequence_quality.png
-##             │   ├── fastqc_SRR7866699_2_per_base_quality.png
-##             │   ├── fastqc_SRR7866699_2_per_sequence_quality.png
-##             │   ├── fastqc_SRR7866705_1_per_base_quality.png
-##             │   ├── fastqc_SRR7866705_2_per_base_quality.png
-##             │   └── README.txt
-##             └── README.txt</code></pre>
+<div id="rmarkdown-parameterization" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">6</span> RMarkdown parameterization<a href="rmarkdown-parameterization.html#rmarkdown-parameterization" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The aim of this assignment is to create an RMardown file containing a parameterized report for the COVID-19 cases as can be downloaded from the ECDC. The Rmd should include at least three parameters:</p>
+<ul>
+<li><p>The country to which the report applies to</p></li>
+<li><p>The year that the reported data applies to</p></li>
+<li><p>The period in months that the report applies to</p></li>
+</ul>
+<p>I created a parameterized Rmarkdown as seen below. The parameterized Rmarkdown is available via <a href="https://github.com/kjettil/portfolio/blob/main/opdracht9/portfolio9.Rmd">github</a></p>
+<div id="preview-parameterized-rmarkdown-covid-cases-and-deaths" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> preview parameterized Rmarkdown covid cases and deaths<a href="rmarkdown-parameterization.html#preview-parameterized-rmarkdown-covid-cases-and-deaths" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>using webshot i created a screenshot of the parameterized Rmarkdown HTML so it would be easier to preview this excercise in github pages.</p>
+<p>As seen in the parameterized Rmarkdown the default is set to france august 2020</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="rmarkdown-parameterization.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">#make screenshot of parameterized Rmarkdown</span></span>
+<span id="cb60-2"><a href="rmarkdown-parameterization.html#cb60-2" aria-hidden="true" tabindex="-1"></a>webshot<span class="sc">::</span><span class="fu">webshot</span>(<span class="st">&quot;data/opdracht9/portfolio9.html&quot;</span>, <span class="st">&quot;data/opdracht9/portfolio9.png&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown_portfolio_files/figure-html/preview%20HTML-1.png" width="672" /></p>
+</div>
+<div id="testing-parameters" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> testing parameters<a href="rmarkdown-parameterization.html#testing-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The next step is to test the parameterized Rmarkdown by using rmarkdown::render() and setting params of choice. I set a output file for so that a HTML will be called like the parameters i set.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="rmarkdown-parameterization.html#cb61-1" aria-hidden="true" tabindex="-1"></a>rmarkdown<span class="sc">::</span><span class="fu">render</span>(<span class="st">&quot;data/opdracht9/portfolio9.Rmd&quot;</span>, <span class="at">params =</span> <span class="fu">list</span>(<span class="at">country =</span> <span class="st">&quot;Germany&quot;</span>, <span class="at">year =</span> <span class="dv">2021</span>, <span class="at">month =</span> <span class="dv">5</span>), <span class="at">output_file =</span> <span class="st">&quot;germany_2021_05&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+  |                                                      
+  |                                                |   0%
+  |                                                      
+  |....                                            |   9%                      
+  |                                                      
+  |.........                                       |  18% (libraries)          
+  |                                                      
+  |.............                                   |  27%                      
+  |                                                      
+  |.................                               |  36% (loading data)       
+  |                                                      
+  |......................                          |  45%                      
+  |                                                      
+  |..........................                      |  55% (make dataset usable)
+  |                                                      
+  |...............................                 |  64%                      
+  |                                                      
+  |...................................             |  73% (ggplot covid cases) 
+  |                                                      
+  |.......................................         |  82%                      
+  |                                                      
+  |............................................    |  91% (covid deaths)       
+  |                                                      
+  |................................................| 100%                      
+                                                                                                                
+## &quot;C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/pandoc&quot; +RTS -K512m -RTS portfolio9.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output germany_2021_05.html --lua-filter &quot;C:\Users\kjett\AppData\Local\R\win-library\4.2\rmarkdown\rmarkdown\lua\pagebreak.lua&quot; --lua-filter &quot;C:\Users\kjett\AppData\Local\R\win-library\4.2\rmarkdown\rmarkdown\lua\latex-div.lua&quot; --embed-resources --standalone --variable bs3=TRUE --section-divs --template &quot;C:\Users\kjett\AppData\Local\R\win-library\4.2\rmarkdown\rmd\h\default.html&quot; --no-highlight --variable highlightjs=1 --variable theme=bootstrap --mathjax --variable &quot;mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; --include-in-header &quot;C:\Users\kjett\AppData\Local\Temp\RtmpU1x69Y\rmarkdown-str5820772c41b1.html&quot;</code></pre>
+</div>
+<div id="results" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> results<a href="rmarkdown-parameterization.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The last step is to make show the HTML using webshot to see that the parameters work</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="rmarkdown-parameterization.html#cb63-1" aria-hidden="true" tabindex="-1"></a>webshot<span class="sc">::</span><span class="fu">webshot</span>(<span class="st">&quot;data/opdracht9/germany_2021_05.html&quot;</span>, <span class="st">&quot;data/opdracht9/germany_2021_05.png&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown_portfolio_files/figure-html/screenshot%20of%20results-1.png" width="672" /></p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="open-peer-review.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="rmarkdown-parameterization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="example-guerrilla-analytics-structure.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="citations-using-zotero.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -322,7 +299,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/005_tree.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/006_RMarkdown_parameterization.Rmd",
 "text": "Edit"
 },
 "history": {
