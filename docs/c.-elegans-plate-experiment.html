@@ -304,8 +304,7 @@ inhibitory effect on C.elegans so one sided.</p>
 <span id="cb11-2"><a href="c.-elegans-plate-experiment.html#cb11-2" aria-hidden="true" tabindex="-1"></a>sum_CE_LIQ_FLOW<span class="ot">&lt;-</span> CE_LIQ_FLOW <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(expType, compName, compConcentration ) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(RawData, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
 <span id="cb11-3"><a href="c.-elegans-plate-experiment.html#cb11-3" aria-hidden="true" tabindex="-1"></a>sum_CE_LIQ_FLOW</span></code></pre></div>
 <pre><code>## # A tibble: 22 × 4
-## # Groups:   expType, compName
-## #   [6]
+## # Groups:   expType, compName [6]
 ##    expType         compName                   compConcentration  mean
 ##    &lt;chr&gt;           &lt;chr&gt;                                  &lt;dbl&gt; &lt;dbl&gt;
 ##  1 controlNegative S-medium                           0          85.9

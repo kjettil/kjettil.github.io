@@ -11,7 +11,7 @@ new_session: yes
 ---
 
 # Welkom to my portfolio
-My name is Kjettil Evers, and my portfolio is a representation of all that I've learned and accomplished using data science. 
+My name is Kjettil Evers and my portfolio is a representation of all that I've learned and accomplished using data science. 
 
 
 This portfolio showcases my skills in different subjects using Rmarkdown and more!

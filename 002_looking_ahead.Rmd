@@ -50,6 +50,6 @@ fourth day and fifth day
 
 ## final result
 
-The final result will be available [here](https://kjettil.shinyapps.io/antibiotics_usage/). The code for the shiny dashboard is available on my [github](hier web pagina toevoegen voor code ui.R)
+The final result will be available [here](https://kjettil.shinyapps.io/antibiotics_usage/). The code for the shiny dashboard is available on my [github](https://github.com/kjettil/kjettil.github.io/blob/main/data/opdracht3_2/antibiotics_usage/ui.R)
 
 
