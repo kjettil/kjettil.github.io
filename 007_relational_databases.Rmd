@@ -1,16 +1,9 @@
----
-title: "opdracht7"
-author: "Kjettil Evers"
-date: "2023-05-15"
-output: html_document
----
-
 # relational databases
 
 In this exercise I will be using a relational database. this is a type of database that stores and provides access to data points that are related to one another. I will be using DBeaver to combine the Gapminder dataset with 2 other datasets containing flu/dengue google searches per country over the years.
 
 
-I used the following librarys for this exercise:
+I used the following libraries for this exercise:
 ```{r message=FALSE, warning=FALSE}
 library(png)
 library(grid)
@@ -26,6 +19,9 @@ library(DBI)
 library(RPostgreSQL)
 
 ```
+
+## The data
+
 The first step is to load and inspect the Flu (./data/flu_data.csv), dengue (“./data/dengue_data.csv) and gapminder data ({dslabs} package) available [here](https://github.com/DataScienceILC/tlsc-dsfb26v-20_workflows)
 
 ```{r load data, message=FALSE, warning=FALSE}
@@ -43,7 +39,8 @@ gap_data<- gapminder
 head(gap_data)
 ```
 
-after inspecting the data I made the flu and dengue data tidy and alterd the data so it will be easier to merge with the gapminder data late on
+after inspecting the data I made the flu and dengue data tidy and alterd the data so it will be easier to merge with the Gapminder data late on.
+
 ```{r flu data tidy, message=FALSE, warning=FALSE}
 
 
@@ -105,6 +102,8 @@ dengue_data_tidy$country<- as.factor(dengue_data_tidy$country)
 head(dengue_data_tidy)
 
 ```
+
+
 After I finised fixing al the datasets I stored as both csv and rds with the following code
 ```{r store data, eval=FALSE, message=FALSE, warning=FALSE}
 #store data as csv and rds
@@ -122,7 +121,7 @@ saveRDS(gap_data, file = "data/gap_data.rds")
 ```
 
 The next step was to setup a database in DBeaver. I called the database workflowsdb. 
-
+## Using SQL 
 Using RPostgreSQL, I inserted the datasets from earlier in the workflowsdb dataset
 ```{r eval=FALSE, message=FALSE, warning=FALSE}
 
@@ -164,6 +163,7 @@ img2 <-  rasterGrob(as.raster(readPNG("data/opdracht7/innerjoin.png")))
 grid.arrange(img2, top=textGrob("Data inspection using SQL in DBeaver", gp=gpar(fontsize=10,font=8)))
 ```
 
+##  inspecting merged data
 I loaded the joined data in with the following code:
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
@@ -188,6 +188,7 @@ summary(results)
 
 ```
 
+## visualization
 At last I made various ggplots to visualize data from the joined dataset
 The first two ggplot are the basic ggplot showing the flu and dengue searches over the year 
 ```{r basic ggplots, , message=FALSE, warning=FALSE}

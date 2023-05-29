@@ -7,6 +7,7 @@ The aim of this assignment is to create an RMardown file containing a parameteri
  
  - The period in months that the report applies to
  
+## preview parameterized Rmarkdown covid cases and deaths
 I created a parameterized Rmarkdown as seen below. The parameterized Rmarkdown is available via [github](https://github.com/kjettil/portfolio/blob/main/opdracht9/portfolio9.Rmd)
 
 ```{r library, message=TRUE, warning=TRUE, include=FALSE}
@@ -16,8 +17,7 @@ library(gridExtra)
 library(webshot)
 ```
 
-## preview parameterized Rmarkdown covid cases and deaths
-using webshot i created a screenshot of the parameterized Rmarkdown HTML so it would be easier to preview this excercise in github pages.
+using webshot I created a screenshot of the parameterized Rmarkdown HTML I made, so it would be easier to preview this excercise in github pages.
 
 As seen in the parameterized Rmarkdown the default is set to france august 2020
 ```{r preview HTML}
@@ -26,7 +26,7 @@ webshot::webshot("data/opdracht9/portfolio9.html", "data/opdracht9/portfolio9.pn
 ```
 
 ## testing parameters
-The next step is to test the parameterized Rmarkdown by using rmarkdown::render() and setting params of choice. I set a output file for so that a HTML will be called like the parameters i set. 
+The next step is to test the parameterized Rmarkdown by using rmarkdown::render() and setting params of choice. I named the output file the same as the param settings so that a HTML will be called like the parameters i set. 
 ```{r render using params, message=FALSE}
 rmarkdown::render("data/opdracht9/portfolio9.Rmd", params = list(country = "Germany", year = 2021, month = 5), output_file = "germany_2021_05")
 ```
@@ -37,5 +37,5 @@ The last step is to make show the HTML using webshot to see that the parameters 
 webshot::webshot("data/opdracht9/germany_2021_05.html", "data/opdracht9/germany_2021_05.png")
 ```
 
-
+After checking the results you can see that the paramaters work and can be used for other countrys and dates. 
 

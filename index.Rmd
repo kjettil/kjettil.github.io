@@ -4,16 +4,20 @@ author: "Kjettil Evers"
 date: "`r Sys.Date()`"
 site: "bookdown::bookdown_site"
 documentclass: book
-bibliography: ["book.bib", "packages.bib", '`r rbbt::bbt_write_bib("data/opdracht5/bibliography.json", overwrite = TRUE)`']
+bibliography: ['`r rbbt::bbt_write_bib("data/opdracht5/bibliography.json", overwrite = TRUE)`']
 biblio-style: apalike
 link-citations: yes
 new_session: yes
 ---
 
 # Welkom to my portfolio
-In this bookdown i created my portfolio where is showcase my skills in different subjects using Rmarkdown and more!
+My name is Kjettil Evers, and my portfolio is a representation of all that I've learned and accomplished using data science. 
 
-each chapter contains a exercise that shows what and how i executed the exercise. 
+
+This portfolio showcases my skills in different subjects using Rmarkdown and more!
+each chapter contains a exercise that shows how i executed the exercise step by step. It also gives a view it shows the perspective of how I approached my assignments and why I made certain choices. 
+
+All files in this bookdown are available in my [github](https://github.com/kjettil/kjettil.github.io)
 
 
 

@@ -1,3 +1,6 @@
+# My resume
+In the PDF viewer below you can see my resume that I wrote using R. The code that i used to write my resume is available on my [github](https://github.com/kjettil/kjettil.github.io/tree/main/data/opdracht3) 
 ```{r cv, echo=F, out.width="100%", out.height="1500"}
 knitr::include_graphics('data/opdracht3/Kjettil-Evers2.pdf')
 ```
+

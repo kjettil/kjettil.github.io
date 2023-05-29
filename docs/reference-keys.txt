@@ -1,7 +1,10 @@
 fig:images
 fig:img2
 welkom-to-my-portfolio
+my-resume
 looking-ahead
+planning
+final-result
 c.-elegans-plate-experiment
 open-peer-review
 part-1
@@ -12,6 +15,10 @@ rmarkdown-parameterization
 preview-parameterized-rmarkdown-covid-cases-and-deaths
 testing-parameters
 results
+relational-databases
+the-data
+inspecting-merged-data
+visualization
 citations-using-zotero
 introductie
-relational-databases
+referenties

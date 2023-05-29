@@ -1,0 +1,57 @@
+---
+title: "map of europe test"
+author: "Kjettil Evers"
+date: "2023-05-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# install.packages("sf")  # for spatial data handling
+# install.packages("rnaturalearth")  # for map data
+# install.packages("rnaturalearthdata")  # for map data
+# install.packages("ggplot2")  # for data visualization
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(ggplot2)
+library(readxl)
+library(tidyverse)
+library(plotly)
+library(viridis)
+
+```
+
+
+```{r map europe}
+# Obtain the map data for Europe:
+world <- ne_countries(scale = "medium", continent = "Europe", returnclass = "sf")
+```
+
+```{r}
+tetracyclines <- read_excel("~/dsfb2/dsfb2_workflows_portfolio/opdracht3_2/antibiotics_usage/Annex_1_ESAC-Net_report_2020_downloadable_tables.xlsx", 
+                                                               sheet = "D1_J01A_AC", range = "a2:K33")
+
+
+
+```
+
+```{r}
+map_data <- left_join(world, tetracyclines, by = c("name_long" = "Country name"))
+view(map_data)
+```
+
+```{r}
+# Define the zoom coordinates as a named list
+zoom_coordinates <- list(xmin = -10, xmax = 40, ymin = 30, ymax = 80)
+
+# Create the choropleth map with zoom
+ggplot(data = map_data) +
+  geom_sf(aes(fill = `2011`), color = "white") +
+  scale_fill_viridis(option = "plasma", name = "Data") +
+  theme_minimal() +
+  coord_sf(xlim = c(zoom_coordinates$xmin, zoom_coordinates$xmax),
+           ylim = c(zoom_coordinates$ymin, zoom_coordinates$ymax),
+           expand = FALSE)
+
+```
+
