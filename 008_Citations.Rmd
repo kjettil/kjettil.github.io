@@ -1,13 +1,20 @@
 # Citations using Zotero
 
-In this exercise I wrote an introduction for my project, in dutch, using the Zotero citation tool.  
+In this exercise I wrote an introduction for my project using the Zotero citation tool.  
 
-## Introductie
-Anabolische resistentie of een slechte eiwitsynthese response op anabole stimuli in ouderen, kan leiden tot verlies van spiermassa. Het verliezen van spiermassa wordt ook wel Sarcopenie genoemd. [@boirieFastDigestiveProteins2018; @vandijkImprovedMuscleFunction2016]  Spieronderhoud is afhankelijk van aminozuren. Eén van de aminozuren die een hoge anabole stimulus veroorzaakt, is leucine. Dit komt omdat leucine de eigenschap heeft om mTORC1 te activeren, wat vervolgens zowel p70s6k als 4E-BP1 activeerd. Dit zijn belangrijke factoren, omdat deze beide de spier eiwitsynthese (MPS) activeren. @dijkDifferentialEffectsLeucine2018 Uit studies is gebleken, dat MPS in skeletspieren bij jonge ratten, na het opnemen van enkele orale dosis leucine, wordt gestimuleerd. @crozierOralLeucineAdministration2005 Het artikel van [@dardevetStimulationVitroRat2000] bevestigd de aanwezigheid van anabole resistentie tegen leucine in oude ratten na toediening van alleen leucine via een orgaanbad. Echter over een orale toediening van leucine in cominatie met andere voedingsstoffen bij oudere ratten is nog niet veel bekend. 
+## introduction
+Skeletal muscle mass is the result of a balance between protein synthesis and protein breakdown of skeletal muscle proteins. a decreased protein synthesis response or anabolic resistance to anabolic stimuli in elderly can lead to loss of skeletal muscle mass. This can be seen in people with sarcopenia. sarcopenia is the result of multiple factors, including lack of activity/exercise, increased levels of oxidative stress, endocrine changes, lack of nutrition and as said before a decreased protein synthesis response or anabolic resistance[@boirieFastDigestiveProteins2018; @vandijkImprovedMuscleFunction2016]
 
-Het doel van deze studie was het onderzoeken van het effect van leucine in losse vorm of in de aanwezigheid van whey protein op MPS en de activatie van mTOR signaalroute in oudere muizen. Om de relavantie van leucine en andere aminozuren te bepalen is het vrije aminozuurgehalte in plasma en spier bepaald.
+Muscle maintenance depends on amino acids. One of the amino acids that produces a high anabolic stimulus is leucine. This is because leucine has the ability to activate mTORC1. mTORC1 (mammalian target of rapamycin complex 1), is a protein complex that functions as a nutrient/energy/redox sensor and controls protein synthesis. The activation of mTORC1 leads to the activattion of both p70s6k kinase as the 4E-BP1 protein. These are important because Both factors are involved in mRNA translation initiation and de novo muscle protein synthesis (MPS). @dijkDifferentialEffectsLeucine2018 Studies have shown that MPS in skeletal muscle in young rats, after taking a single dosis leucine orally, is stimulated. 
 
-Aan ons de taak, om met behulp van R, een code te schrijven die in één oogopslag een duidelijk visueel beeld geeft van de bepaling. Waarin goed te zien is wat de effecten op de vrije aminozuren na toevoegen van leucine en andere factoren zijn. 
+the article of [@dardevetStimulationVitroRat2000] also shows that amino acids and leucine stimulate muscle protein synthesis and that aging is associated with a decrease in this effect. In this experiment they tested the effects of amino acids or leucine alone. This was assessed in vitro on epitrochlearis muscle from young, adult and old rats.
 
+The aim of this study was to investigate the effect of leucine alone or in the presence of whey protein on MPS and the activation of the mTOR signaling pathway in elderly mice. To determine the relevance of leucine and other amino acids, the free amino acid content in plasma and muscle was determined.
 
-## referenties
+Our task in this project is to write a code in R that visualizes the free amino acid content in plasma. The visualizations should clearly shows the effects on the free amino acids after adding leucine and other factors. 
+
+We will create graphs like a boxplot, but we will also be using heatmaps. In a heatmap, each row and column of the matrix represents a variable or an observation, and the cells within the matrix represent the values of those variables or observations. The color of each cell represents the magnitude or intensity of the value. Typically, a color scale is used to map the values to different colors, with higher values represented by brighter or darker colors and lower values represented by lighter or cooler colors. heatmaps are particularly useful for identifying patterns, trends, and clusters within the data. In this case the heatmap will cluster the different treated groups in the experiment.
+
+At last we will be looking into correlations of the amino acids and visualize this using the corrplot package.
+
+After creating the visualizations, after the visualization we automate the code (Parameterized rmarkdown or using functions) so that the employer can easily use the code and only have to load the correct dataset in the code.
