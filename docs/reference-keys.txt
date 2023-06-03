@@ -20,5 +20,5 @@ the-data
 inspecting-merged-data
 visualization
 citations-using-zotero
-introductie
-referenties
+introduction
+using-sql

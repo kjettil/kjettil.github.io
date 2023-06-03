@@ -1,13 +1,18 @@
+---
+nocite: >
+  @boirieFastDigestiveProteins2018, @vandijkImprovedMuscleFunction2016, @dijkDifferentialEffectsLeucine2018, @dardevetStimulationVitroRat2000, @crozierOralLeucineAdministration2005 
+...
 # Citations using Zotero
 
 In this exercise I wrote an introduction for my project using the Zotero citation tool.  
 
 ## introduction
-Skeletal muscle mass is the result of a balance between protein synthesis and protein breakdown of skeletal muscle proteins. A decreased protein synthesis response or anabolic resistance to anabolic stimuli in elderly can lead to loss of skeletal muscle mass. This can be seen in people with sarcopenia. Sarcopenia is the result of multiple factors, including lack of activity/exercise, increased levels of oxidative stress, endocrine changes, lack of nutrition and as said before a decreased protein synthesis response or anabolic resistance[@boirieFastDigestiveProteins2018; @vandijkImprovedMuscleFunction2016]
+Skeletal muscle mass is the result of a balance between protein synthesis and protein breakdown of skeletal muscle proteins. A decreased protein synthesis response or anabolic resistance to anabolic stimuli in elderly can lead to loss of skeletal muscle mass. This can be seen in people with sarcopenia. Sarcopenia is the result of multiple factors, including lack of activity/exercise, increased levels of oxidative stress, endocrine changes, lack of nutrition and as said before a decreased protein synthesis response or anabolic resistance. @boirieFastDigestiveProteins2018; @vandijkImprovedMuscleFunction2016
 
-Muscle maintenance depends on amino acids. One of the amino acids that produces a high anabolic stimulus is leucine. This is because leucine has the ability to activate mammalian target of rapamycin complex 1 (mTORC1). mTORC1 is a protein complex that controls protein synthesis and is active in the translation of proteins. The activation of mTORC1 leads to the activation of both p70s6k kinase and the 4E-BP1 protein. These are important because both factors are involved in mRNA translation initiation and muscle protein synthesis (MPS). @dijkDifferentialEffectsLeucine2018 Studies have shown that MPS in skeletal muscle in young rats, after taking a single dosis leucine orally, is stimulated. 
+Muscle maintenance depends on amino acids. One of the amino acids that produces a high anabolic stimulus is leucine. This is because leucine has the ability to activate mammalian target of rapamycin complex 1 (mTORC1). mTORC1 is a protein complex that controls protein synthesis and is active in the translation of proteins. The activation of mTORC1 leads to the activation of both p70s6k kinase and the 4E-BP1 protein. These are important because both factors are involved in mRNA translation initiation and muscle protein synthesis (MPS). @dijkDifferentialEffectsLeucine2018 
+Studies have shown that MPS in skeletal muscle in young rats, after taking a single dosis leucine orally, is stimulated. 
 
-The article of [@dardevetStimulationVitroRat2000] also shows that amino acids and leucine stimulate muscle protein synthesis and that aging is associated with a decrease in this effect. In this experiment they tested the effects of amino acids or leucine alone. This was assessed in vitro on epitrochlearis muscle from young, adult and old rats.
+The articles [@dardevetStimulationVitroRat2000; @crozierOralLeucineAdministration2005] also show that amino acids and leucine stimulate muscle protein synthesis and that aging is associated with a decrease in this effect. In this experiment they tested the effects of amino acids or leucine alone. This was assessed in vitro on epitrochlearis muscle from young, adult and old rats.
 
 The aim of this study was to investigate the effect of leucine alone or in the presence of whey protein on MPS and the activation of the mTORC1 signaling pathway in elderly mice. To determine the relevance of leucine and other amino acids, the free amino acid content in plasma and muscle was determined.
 

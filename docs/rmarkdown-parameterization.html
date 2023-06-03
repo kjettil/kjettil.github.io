@@ -23,7 +23,7 @@
 <meta name="author" content="Kjettil Evers" />
 
 
-<meta name="date" content="2023-05-29" />
+<meta name="date" content="2023-06-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -193,8 +193,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="9" data-path="citations-using-zotero.html"><a href="citations-using-zotero.html"><i class="fa fa-check"></i><b>9</b> Citations using Zotero</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="citations-using-zotero.html"><a href="citations-using-zotero.html#introductie"><i class="fa fa-check"></i><b>9.1</b> Introductie</a></li>
-<li class="chapter" data-level="9.2" data-path="citations-using-zotero.html"><a href="citations-using-zotero.html#referenties"><i class="fa fa-check"></i><b>9.2</b> referenties</a></li>
+<li class="chapter" data-level="9.1" data-path="citations-using-zotero.html"><a href="citations-using-zotero.html#introduction"><i class="fa fa-check"></i><b>9.1</b> introduction</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -237,38 +236,23 @@ div.csl-indent {
 <h2><span class="header-section-number">7.2</span> testing parameters<a href="rmarkdown-parameterization.html#testing-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The next step is to test the parameterized Rmarkdown by using rmarkdown::render() and setting params of choice. I named the output file the same as the param settings so that a HTML will be called like the parameters i set.</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="rmarkdown-parameterization.html#cb62-1" aria-hidden="true" tabindex="-1"></a>rmarkdown<span class="sc">::</span><span class="fu">render</span>(<span class="st">&quot;data/opdracht9/portfolio9.Rmd&quot;</span>, <span class="at">params =</span> <span class="fu">list</span>(<span class="at">country =</span> <span class="st">&quot;Germany&quot;</span>, <span class="at">year =</span> <span class="dv">2021</span>, <span class="at">month =</span> <span class="dv">5</span>), <span class="at">output_file =</span> <span class="st">&quot;germany_2021_05&quot;</span>)</span></code></pre></div>
-<pre><code>## 
-  |                                                      
-  |                                                |   0%
-  |                                                      
-  |....                                            |   9%                      
-  |                                                      
-  |.........                                       |  18% (libraries)          
-  |                                                      
-  |.............                                   |  27%                      
-  |                                                      
-  |.................                               |  36% (loading data)       
-  |                                                      
-  |......................                          |  45%                      
-  |                                                      
-  |..........................                      |  55% (make dataset usable)
-  |                                                      
-  |...............................                 |  64%                      
-  |                                                      
-  |...................................             |  73% (ggplot covid cases) 
-  |                                                      
-  |.......................................         |  82%                      
-  |                                                      
-  |............................................    |  91% (covid deaths)       
-  |                                                      
-  |................................................| 100%                      
-                                                                                                                
-## &quot;C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/pandoc&quot; +RTS -K512m -RTS portfolio9.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output germany_2021_05.html --lua-filter &quot;C:\Users\kjett\AppData\Local\R\win-library\4.2\rmarkdown\rmarkdown\lua\pagebreak.lua&quot; --lua-filter &quot;C:\Users\kjett\AppData\Local\R\win-library\4.2\rmarkdown\rmarkdown\lua\latex-div.lua&quot; --embed-resources --standalone --variable bs3=TRUE --section-divs --template &quot;C:\Users\kjett\AppData\Local\R\win-library\4.2\rmarkdown\rmd\h\default.html&quot; --no-highlight --variable highlightjs=1 --variable theme=bootstrap --mathjax --variable &quot;mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; --include-in-header &quot;C:\Users\kjett\AppData\Local\Temp\RtmpO0ZnKG\rmarkdown-str2de437b25a6f.html&quot;</code></pre>
+<pre><code>## 1/11                      
+## 2/11 [libraries]          
+## 3/11                      
+## 4/11 [loading data]       
+## 5/11                      
+## 6/11 [make dataset usable]
+## 7/11                      
+## 8/11 [ggplot covid cases]</code></pre>
+<pre><code>## 9/11                      
+## 10/11 [covid deaths]</code></pre>
+<pre><code>## 11/11                      
+## &quot;C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/pandoc&quot; +RTS -K512m -RTS portfolio9.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output germany_2021_05.html --lua-filter &quot;C:\Users\kjett\AppData\Local\R\win-library\4.2\rmarkdown\rmarkdown\lua\pagebreak.lua&quot; --lua-filter &quot;C:\Users\kjett\AppData\Local\R\win-library\4.2\rmarkdown\rmarkdown\lua\latex-div.lua&quot; --embed-resources --standalone --variable bs3=TRUE --section-divs --template &quot;C:\Users\kjett\AppData\Local\R\win-library\4.2\rmarkdown\rmd\h\default.html&quot; --no-highlight --variable highlightjs=1 --variable theme=bootstrap --mathjax --variable &quot;mathjax-url=https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; --include-in-header &quot;C:\Users\kjett\AppData\Local\Temp\RtmpmmkTq7\rmarkdown-str47d49a0390.html&quot;</code></pre>
 </div>
 <div id="results" class="section level2 hasAnchor" number="7.3">
 <h2><span class="header-section-number">7.3</span> results<a href="rmarkdown-parameterization.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The last step is to make show the HTML using webshot to see that the parameters work</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="rmarkdown-parameterization.html#cb64-1" aria-hidden="true" tabindex="-1"></a>webshot<span class="sc">::</span><span class="fu">webshot</span>(<span class="st">&quot;data/opdracht9/germany_2021_05.html&quot;</span>, <span class="st">&quot;data/opdracht9/germany_2021_05.png&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="rmarkdown-parameterization.html#cb66-1" aria-hidden="true" tabindex="-1"></a>webshot<span class="sc">::</span><span class="fu">webshot</span>(<span class="st">&quot;data/opdracht9/germany_2021_05.html&quot;</span>, <span class="st">&quot;data/opdracht9/germany_2021_05.png&quot;</span>)</span></code></pre></div>
 <p><img src="bookdown_portfolio_files/figure-html/screenshot%20of%20results-1.png" width="672" /></p>
 <p>After checking the results you can see that the paramaters work and can be used for other countrys and dates.</p>
 
