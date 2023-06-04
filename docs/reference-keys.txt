@@ -19,6 +19,10 @@ relational-databases
 the-data
 inspecting-merged-data
 visualization
+building-a-package
+datainspecter
+functions
+installation
+data
 citations-using-zotero
 introduction
-using-sql

@@ -12,16 +12,20 @@ This exercise is about building a package. The package should at least include:
 ## dataInspecter
 The package I made is called "dataInspecter". It contains four functions with examples, a dataset and a vignette.
 
-## Functions
+### Functions
 dataInspecter contains four functions that can be helpful for loading, inspecting and saving data. 
 
 The four functions are:
+
 1: read_data_from_excel() -> loads in data from excel and previews data
+
 2: print_head() -> shows the first 10 rows of the dataset
+
 3: save_datafile() -> saves variable as .csv and .rds
+
 4: time() -> tells the time
 
-## Installation
+### Installation
 
 You can install the development version of dataInspecter with vignette from [GitHub](https://github.com/) with:
 
@@ -30,5 +34,5 @@ You can install the development version of dataInspecter with vignette from [Git
 devtools::install_github("kjettil/dataInspecter", build_vignettes = TRUE)
 ```
 
-## Data
+### Data
 This package comes with a dataset that shows the tetracyclines consumption in the EU/EEA from 2011 till 2020. ?tetracyclines_usage will give you more detailed information about the dataset.
