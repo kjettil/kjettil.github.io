@@ -1,0 +1,34 @@
+# building a package
+This exercise is about building a package. The package should at least include:
+
+- A properly formatted DESCRIPTION file, with all the fields including relevant information (so change the default values)
+
+- 4 different functions that I wrote and with proper documentation, using roxygen2 comments
+- A NAMESPACE file, generated with the command devtools::document()
+- 1 Raw dataset that is documented and cleaned into a clean dataset. This clean dataset should be accessible inside your package. call data("tetracyclines_usage", package = "dataInspecter") to load the cleaned dataset of interest in the Global Environment.
+- One vignette that is accessible via the command browseVignettes("dataInspecter") or vignette("dataInspecter")
+- The package installs from Github without errors when runing: devtools::install_github("kjettil/dataInspecter")
+
+## dataInspecter
+The package I made is called "dataInspecter". It contains four functions with examples, a dataset and a vignette.
+
+## Functions
+dataInspecter contains four functions that can be helpful for loading, inspecting and saving data. 
+
+The four functions are:
+1: read_data_from_excel() -> loads in data from excel and previews data
+2: print_head() -> shows the first 10 rows of the dataset
+3: save_datafile() -> saves variable as .csv and .rds
+4: time() -> tells the time
+
+## Installation
+
+You can install the development version of dataInspecter with vignette from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("kjettil/dataInspecter", build_vignettes = TRUE)
+```
+
+## Data
+This package comes with a dataset that shows the tetracyclines consumption in the EU/EEA from 2011 till 2020. ?tetracyclines_usage will give you more detailed information about the dataset.
