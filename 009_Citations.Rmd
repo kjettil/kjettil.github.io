@@ -1,7 +1,4 @@
----
-nocite: >
-  @boirieFastDigestiveProteins2018, @vandijkImprovedMuscleFunction2016, @dijkDifferentialEffectsLeucine2018, @dardevetStimulationVitroRat2000, @crozierOralLeucineAdministration2005 
-...
+
 # Citations using Zotero
 
 In this exercise I wrote an introduction for my project using the Zotero citation tool.  
@@ -23,3 +20,5 @@ We will create graphs like a boxplot, but we will also be using heatmaps. In a h
 At last we will be looking into correlations of the amino acids and visualize this using the corrplot package.
 
 After creating the visualizations we automate the code (Parameterized rmarkdown or using functions) so that the employer can easily use the code and only have to load the correct dataset in the code.
+
+## references

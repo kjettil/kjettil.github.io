@@ -26,3 +26,4 @@ installation
 data
 citations-using-zotero
 introduction
+references

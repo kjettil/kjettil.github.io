@@ -23,7 +23,7 @@
 <meta name="author" content="Kjettil Evers" />
 
 
-<meta name="date" content="2023-06-04" />
+<meta name="date" content="2023-06-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -203,6 +203,7 @@ div.csl-indent {
 <li class="chapter" data-level="10" data-path="citations-using-zotero.html"><a href="citations-using-zotero.html"><i class="fa fa-check"></i><b>10</b> Citations using Zotero</a>
 <ul>
 <li class="chapter" data-level="10.1" data-path="citations-using-zotero.html"><a href="citations-using-zotero.html#introduction"><i class="fa fa-check"></i><b>10.1</b> introduction</a></li>
+<li class="chapter" data-level="10.2" data-path="citations-using-zotero.html"><a href="citations-using-zotero.html#references"><i class="fa fa-check"></i><b>10.2</b> references</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -229,36 +230,19 @@ div.csl-indent {
 <p>In this exercise I wrote an introduction for my project using the Zotero citation tool.</p>
 <div id="introduction" class="section level2 hasAnchor" number="10.1">
 <h2><span class="header-section-number">10.1</span> introduction<a href="citations-using-zotero.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Skeletal muscle mass is the result of a balance between protein synthesis and protein breakdown of skeletal muscle proteins. A decreased protein synthesis response or anabolic resistance to anabolic stimuli in elderly can lead to loss of skeletal muscle mass. This can be seen in people with sarcopenia. Sarcopenia is the result of multiple factors, including lack of activity/exercise, increased levels of oxidative stress, endocrine changes, lack of nutrition and as said before a decreased protein synthesis response or anabolic resistance. <span class="citation">Boirie and Guillet (<a href="#ref-boirieFastDigestiveProteins2018" role="doc-biblioref">2018</a>)</span>; <span class="citation">Van Dijk et al. (<a href="#ref-vandijkImprovedMuscleFunction2016" role="doc-biblioref">2016</a>)</span></p>
-<p>Muscle maintenance depends on amino acids. One of the amino acids that produces a high anabolic stimulus is leucine. This is because leucine has the ability to activate mammalian target of rapamycin complex 1 (mTORC1). mTORC1 is a protein complex that controls protein synthesis and is active in the translation of proteins. The activation of mTORC1 leads to the activation of both p70s6k kinase and the 4E-BP1 protein. These are important because both factors are involved in mRNA translation initiation and muscle protein synthesis (MPS). <span class="citation">Dijk et al. (<a href="#ref-dijkDifferentialEffectsLeucine2018" role="doc-biblioref">2018</a>)</span>
+<p>Skeletal muscle mass is the result of a balance between protein synthesis and protein breakdown of skeletal muscle proteins. A decreased protein synthesis response or anabolic resistance to anabolic stimuli in elderly can lead to loss of skeletal muscle mass. This can be seen in people with sarcopenia. Sarcopenia is the result of multiple factors, including lack of activity/exercise, increased levels of oxidative stress, endocrine changes, lack of nutrition and as said before a decreased protein synthesis response or anabolic resistance. <span class="citation">Boirie and Guillet (<a href="citations-using-zotero.html#ref-boirieFastDigestiveProteins2018" role="doc-biblioref">2018</a>)</span>; <span class="citation">Van Dijk et al. (<a href="citations-using-zotero.html#ref-vandijkImprovedMuscleFunction2016" role="doc-biblioref">2016</a>)</span></p>
+<p>Muscle maintenance depends on amino acids. One of the amino acids that produces a high anabolic stimulus is leucine. This is because leucine has the ability to activate mammalian target of rapamycin complex 1 (mTORC1). mTORC1 is a protein complex that controls protein synthesis and is active in the translation of proteins. The activation of mTORC1 leads to the activation of both p70s6k kinase and the 4E-BP1 protein. These are important because both factors are involved in mRNA translation initiation and muscle protein synthesis (MPS). <span class="citation">Dijk et al. (<a href="citations-using-zotero.html#ref-dijkDifferentialEffectsLeucine2018" role="doc-biblioref">2018</a>)</span>
 Studies have shown that MPS in skeletal muscle in young rats, after taking a single dosis leucine orally, is stimulated.</p>
-<p>The articles <span class="citation">(<a href="#ref-dardevetStimulationVitroRat2000" role="doc-biblioref">Dardevet et al. 2000</a>; <a href="#ref-crozierOralLeucineAdministration2005" role="doc-biblioref">Crozier et al. 2005</a>)</span> also show that amino acids and leucine stimulate muscle protein synthesis and that aging is associated with a decrease in this effect. In this experiment they tested the effects of amino acids or leucine alone. This was assessed in vitro on epitrochlearis muscle from young, adult and old rats.</p>
+<p>The articles <span class="citation">(<a href="citations-using-zotero.html#ref-dardevetStimulationVitroRat2000" role="doc-biblioref">Dardevet et al. 2000</a>; <a href="citations-using-zotero.html#ref-crozierOralLeucineAdministration2005" role="doc-biblioref">Crozier et al. 2005</a>)</span> also show that amino acids and leucine stimulate muscle protein synthesis and that aging is associated with a decrease in this effect. In this experiment they tested the effects of amino acids or leucine alone. This was assessed in vitro on epitrochlearis muscle from young, adult and old rats.</p>
 <p>The aim of this study was to investigate the effect of leucine alone or in the presence of whey protein on MPS and the activation of the mTORC1 signaling pathway in elderly mice. To determine the relevance of leucine and other amino acids, the free amino acid content in plasma and muscle was determined.</p>
 <p>Our task in this project is to write a code in R that visualizes the free amino acid content in plasma. The visualizations should clearly show the effects on the free amino acids after adding leucine and other factors.</p>
 <p>We will create graphs like a boxplot, but we will also be using heatmaps. In a heatmap, each row and column of the matrix represents a variable or an observation, and The cells within the matrix represent the values of those variables or observations. The color of each cell represents the magnitude or intensity of the value. Typically, a color scale is used to map the values to different colors, with higher values represented by brighter or darker colors and lower values represented by lighter or cooler colors. Heatmaps are particularly useful for identifying patterns, trends, and clusters within the data. In this case the heatmap will cluster the different treated groups in the experiment.</p>
 <p>At last we will be looking into correlations of the amino acids and visualize this using the corrplot package.</p>
 <p>After creating the visualizations we automate the code (Parameterized rmarkdown or using functions) so that the employer can easily use the code and only have to load the correct dataset in the code.</p>
+</div>
+<div id="references" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> references<a href="citations-using-zotero.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div class="csl-entry">
-Boirie, Yves, and Christelle Guillet. 2018. <span>“Fast Digestive Proteins and Sarcopenia of Aging.”</span> <em>Current Opinion in Clinical Nutrition &amp; Metabolic Care</em> 21 (1): 37–41. <a href="https://doi.org/10.1097/MCO.0000000000000427">https://doi.org/10.1097/MCO.0000000000000427</a>.
-</div>
-<div class="csl-entry">
-Crozier, Stephen J., Scot R. Kimball, Sans W. Emmert, Joshua C. Anthony, and Leonard S. Jefferson. 2005. <span>“Oral Leucine Administration Stimulates Protein Synthesis in Rat Skeletal Muscle.”</span> <em>The Journal of Nutrition</em> 135 (3): 376–82. <a href="https://doi.org/10.1093/jn/135.3.376">https://doi.org/10.1093/jn/135.3.376</a>.
-</div>
-<div class="csl-entry">
-Dardevet, D., C. Sornet, M. Balage, and J. Grizard. 2000. <span>“Stimulation of in Vitro Rat Muscle Protein Synthesis by Leucine Decreases with Age.”</span> <em>The Journal of Nutrition</em> 130 (11): 2630–35. <a href="https://doi.org/10.1093/jn/130.11.2630">https://doi.org/10.1093/jn/130.11.2630</a>.
-</div>
-<div class="csl-entry">
-Dijk, Francina J., Miriam Van Dijk, Stéphane Walrand, Luc J. C. Van Loon, Klaske Van Norren, and Yvette C. Luiking. 2018. <span>“Differential Effects of Leucine and Leucine-Enriched Whey Protein on Skeletal Muscle Protein Synthesis in Aged Mice.”</span> <em>Clinical Nutrition ESPEN</em> 24 (April): 127–33. <a href="https://doi.org/10.1016/j.clnesp.2017.12.013">https://doi.org/10.1016/j.clnesp.2017.12.013</a>.
-</div>
-<div class="csl-entry">
-Van Dijk, Miriam, Francina J. Dijk, Annelies Bunschoten, Dorien A. M. Van Dartel, Klaske Van Norren, Stephane Walrand, Marion Jourdan, Sjors Verlaan, and Yvette Luiking. 2016. <span>“Improved Muscle Function and Quality After Diet Intervention with Leucine-Enriched Whey and Antioxidants in Antioxidant Deficient Aged Mice.”</span> <em>Oncotarget</em> 7 (14): 17338–55. <a href="https://doi.org/10.18632/oncotarget.7800">https://doi.org/10.18632/oncotarget.7800</a>.
-</div>
-</div>
-</div>
-</div>
-<h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-boirieFastDigestiveProteins2018" class="csl-entry">
 Boirie, Yves, and Christelle Guillet. 2018. <span>“Fast Digestive Proteins and Sarcopenia of Aging.”</span> <em>Current Opinion in Clinical Nutrition &amp; Metabolic Care</em> 21 (1): 37–41. <a href="https://doi.org/10.1097/MCO.0000000000000427">https://doi.org/10.1097/MCO.0000000000000427</a>.
@@ -274,6 +258,8 @@ Dijk, Francina J., Miriam Van Dijk, Stéphane Walrand, Luc J. C. Van Loon, Klask
 </div>
 <div id="ref-vandijkImprovedMuscleFunction2016" class="csl-entry">
 Van Dijk, Miriam, Francina J. Dijk, Annelies Bunschoten, Dorien A. M. Van Dartel, Klaske Van Norren, Stephane Walrand, Marion Jourdan, Sjors Verlaan, and Yvette Luiking. 2016. <span>“Improved Muscle Function and Quality After Diet Intervention with Leucine-Enriched Whey and Antioxidants in Antioxidant Deficient Aged Mice.”</span> <em>Oncotarget</em> 7 (14): 17338–55. <a href="https://doi.org/10.18632/oncotarget.7800">https://doi.org/10.18632/oncotarget.7800</a>.
+</div>
+</div>
 </div>
 </div>
             </section>
@@ -331,7 +317,8 @@ gitbook.start({
 },
 "toc": {
 "collapse": "subsection"
-}
+},
+"split_bib": false
 });
 });
 </script>
