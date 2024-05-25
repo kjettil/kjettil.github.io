@@ -19,4 +19,6 @@ stage <- tribble(
   "Parasitologie", "GD Diergezondheid/Royal GD", "September", 2018, "Februari", 2019, "Nederland - Deventer", "Half jaar stafe gelopen op de afdeling Parasitologie. Hierbij vooral differentiatie van verschillende parasitaire eieren onder de microscoop uitgevoerd." ,
   "Parasitologie", "GD Diergezondheid/Royal GD", "September", 2018, "Februari", 2019, "Nederland - Deventer", "Gebruikte technieken --- McMaster, Microscopie " ,
   "Afstudeerstage MBO", "UMC Utrecht", "September", 2020, "Mei", 2020, "Nederland - Utrecht", "Afdeling virologie",
-  "Afstudeerstage MBO", "UMC Utrecht", "September", 2020, "Mei", 2020, "Nederland - Utrecht", "Gebruikte technieken --- qPCR")
+  "Afstudeerstage MBO", "UMC Utrecht", "September", 2020, "Mei", 2020, "Nederland - Utrecht", "Gebruikte technieken --- qPCR"
+  "Afstudeerstage HBO", "Universiteit utrecht, diergeneeskunde, afdeling virologie", "September", 2023, "june", 2020, "Nederland - Utrecht", "Tijdens mijn negen maanden durende stage aan de Universiteit Utrecht, afdeling Virologie, heb ik onderzoek gedaan naar het gebruik van verschillende cellijnen op air-liquid interface (ALI) celculturen voor respiratoir virusonderzoek.",
+  "Afstudeerstage MBO", "Universiteit utrecht, diergeneeskunde, afdeling virologie", "September", 2023, "june", 2020, "Nederland - Utrecht", "Ik heb tijdens mijn stage verschillende technieken toegepast, waaronder celkweek, RNA-isolatie, RT-qPCR, werken met virussen op ML2-niveau, TCID50-bepalingen en immunofluorescentiekleuring.")
